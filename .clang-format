@@ -1,0 +1,18 @@
+Language: Cpp
+BasedOnStyle: Google
+
+ColumnLimit: 80
+TabWidth: 2
+SortIncludes: Never
+
+PointerAlignment: Left
+
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: true
+  AcrossComments: true
+
+# ReflowComments: true
