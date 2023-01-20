@@ -36,4 +36,5 @@
 #include "debug_support_protocol.hpp"
 #include "debug_port_protocol.hpp"
 #include "arp_protocol.hpp"
+#include "dhcp_protocol.hpp"
 #endif

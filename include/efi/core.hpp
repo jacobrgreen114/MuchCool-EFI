@@ -38,7 +38,7 @@ using uintn_t                    = uintptr_t;
 using intn_t                     = intptr_t;
 
 using Handle                     = void*;
-using Event                      = uintptr_t;
+using Event                      = void*;
 using LBA                        = uint64_t;
 using TPL                        = uintn_t;
 

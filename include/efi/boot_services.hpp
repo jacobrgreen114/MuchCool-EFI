@@ -323,14 +323,16 @@ class BootServices final : public Table {
   static constexpr uint64_t Signature                  = 0x56524553544f4f42;
 };
 
-static constexpr Event TimerEvent                      = 0x80000000;
-static constexpr Event RuntimeEvent                    = 0x40000000;
-static constexpr Event RuntimeContextEvent             = 0x20000000;
+static const Event TimerEvent          = reinterpret_cast<Event>(0x80000000);
+static const Event RuntimeEvent        = reinterpret_cast<Event>(0x40000000);
+static const Event RuntimeContextEvent = reinterpret_cast<Event>(0x20000000);
 
-static constexpr Event NotifyWaitEvent                 = 0x00000100;
-static constexpr Event NotifySignalEvent               = 0x00000200;
+static const Event NotifyWaitEvent     = reinterpret_cast<Event>(0x00000100);
+static const Event NotifySignalEvent   = reinterpret_cast<Event>(0x00000200);
 
-static constexpr Event SignalExitBootServicesEvent     = 0x00000201;
-static constexpr Event SignalVirtualAddressChangeEvent = 0x60000202;
+static const Event SignalExitBootServicesEvent =
+    reinterpret_cast<Event>(0x00000201);
+static const Event SignalVirtualAddressChangeEvent =
+    reinterpret_cast<Event>(0x60000202);
 
 }  // namespace efi

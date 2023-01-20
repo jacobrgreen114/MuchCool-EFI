@@ -6,6 +6,7 @@ TabWidth: 2
 SortIncludes: Never
 
 PointerAlignment: Left
+ReferenceAlignment: Pointer
 
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
