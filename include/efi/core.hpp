@@ -19,6 +19,7 @@
 #error
 #endif
 
+#include <span>
 #include <array>
 #include <cstdint>
 #include <type_traits>
@@ -146,56 +147,66 @@ enum class InterfaceType {
 };
 
 class Guid {
+ public:
+  using Bytes      = std::array<uint8_t, 16>;
+  using Data4Bytes = std::array<uint8_t, 8>;
+
  private:
   union {
-    std::array<uint8_t, 16> _bytes;
+    Bytes bytes_;
     struct {
-      uint32_t _data1;
-      uint16_t _data2;
-      uint16_t _data3;
+      uint32_t data1;
+      uint16_t data2;
+      uint16_t data3;
       union {
-        std::array<uint8_t, 8> bytes;
+        Data4Bytes bytes;
         uint64_t ull;
-      } _data4;
-    } s;
+      } data4;
+    } struct_;
   };
 
  public:
-  constexpr explicit Guid(const std::array<uint8_t, 16>& bytes)
-      : _bytes{bytes} {}
+  constexpr explicit Guid(const Bytes& bytes) : bytes_{bytes} {}
 
   constexpr Guid(uint32_t data1, uint16_t data2, uint16_t data3,
-                 const std::array<uint8_t, 8>& data4)
-      : s{._data1 = data1,
-          ._data2 = data2,
-          ._data3 = data3,
-          ._data4{.bytes = data4}} {}
+                 const Data4Bytes& data4)
+      : struct_{.data1 = data1,
+                .data2 = data2,
+                .data3 = data3,
+                .data4{.bytes = data4}} {}
 
-  constexpr auto operator==(const Guid& guid) const -> bool {
-    return _bytes == guid._bytes;
+  nodiscard constexpr auto& bytes() const noexcept {
+    return bytes_;
+  }
+
+  nodiscard constexpr auto operator==(const Guid& guid) const -> bool {
+    return bytes_ == guid.bytes_;
   }
 };
 
-class Time {
+struct Time {
+  uint16_t year;   // 1900 - 9999
+  uint8_t month;   // 1 - 12
+  uint8_t day;     // 1 - 31
+  uint8_t hour;    // 0 - 23
+  uint8_t minute;  // 0 - 59
+  uint8_t second;  // 0 - 59
  private:
-  uint16_t year_;   // 1900 - 9999
-  uint8_t month_;   // 1 - 12
-  uint8_t day_;     // 1 - 31
-  uint8_t hour_;    // 0 - 23
-  uint8_t minute_;  // 0 - 59
-  uint8_t second_;  // 0 - 59
   uint8_t pad1_;
-  uint32_t nanosecond_;  // 0 - 999,999,999
-  int16_t timezone_;     // --1440 to 1440 or 2047
-  uint8_t daylight_;
+
+ public:
+  uint32_t nanosecond;  // 0 - 999,999,999
+  int16_t timezone;     // --1440 to 1440 or 2047
+  uint8_t daylight;
+
+ private:
   uint8_t pad2_;
 };
 
-class TimeCapabilities {
- private:
-  uint32_t resolution_;
-  uint32_t accuracy_;
-  bool sets_to_zero_;
+struct TimeCapabilities {
+  uint32_t resolution;
+  uint32_t accuracy;
+  bool sets_to_zero;
 };
 
 class Table {
@@ -213,6 +224,18 @@ class Table {
   ~Table()                               = delete;
   auto operator=(Table&&) -> Table&      = delete;
   auto operator=(const Table&) -> Table& = delete;
+
+  nodiscard auto signature() const noexcept {
+    return signature_;
+  }
+
+  nodiscard auto revision() const noexcept {
+    return revision_;
+  }
+
+  nodiscard auto crc32() const noexcept {
+    return crc32_;
+  }
 };
 
 consteval auto revision(uint16_t major, uint16_t point) noexcept -> uint32_t {
