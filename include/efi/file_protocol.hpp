@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -140,44 +139,43 @@ class FileProtocol {
   auto operator=(FileProtocol&&) -> FileProtocol&      = delete;
   auto operator=(const FileProtocol&) -> FileProtocol& = delete;
 
-  auto open(FileProtocol** new_handle, const char16_t* file_name,
-            FileOpenMode open_mode, FileAttribute attributes) noexcept {
+  force_inline auto open(FileProtocol** new_handle, const char16_t* file_name,
+                         FileOpenMode open_mode,
+                         FileAttribute attributes) noexcept {
     return open_(this, new_handle, file_name, open_mode, attributes);
   }
 
-  auto close() noexcept {
+  force_inline auto close() noexcept {
     return close_(this);
   }
 
-  auto delete_file() noexcept {
+  force_inline auto delete_file() noexcept {
     return delete_(this);
   }
 
-  auto read(uintn_t* buffer_size, void* buffer) noexcept {
+  force_inline auto read(uintn_t* buffer_size, void* buffer) noexcept {
     return read_(this, buffer_size, buffer);
   }
 
-  auto write(uintn_t* buffer_size, const void* buffer) noexcept {
+  force_inline auto write(uintn_t* buffer_size, const void* buffer) noexcept {
     return write_(this, buffer_size, buffer);
   }
 
-  auto set_position(uint64_t position) noexcept {
+  force_inline auto set_position(uint64_t position) noexcept {
     return set_position_(this, position);
   }
 
-  auto get_position(uint64_t* position) noexcept {
+  force_inline auto get_position(uint64_t* position) noexcept {
     return get_position_(this, position);
   }
 
-  auto get_info(const Guid& information_type,
-                uintn_t* buffer_size,
-                void* buffer) noexcept {
+  force_inline auto get_info(const Guid& information_type, uintn_t* buffer_size,
+                             void* buffer) noexcept {
     return get_info_(this, information_type, buffer_size, buffer);
   }
 
-  auto set_info(const Guid& information_type,
-                uintn_t buffer_size,
-                const void* buffer) noexcept {
+  force_inline auto set_info(const Guid& information_type, uintn_t buffer_size,
+                             const void* buffer) noexcept {
     return set_info_(this, information_type, buffer_size, buffer);
   }
 };

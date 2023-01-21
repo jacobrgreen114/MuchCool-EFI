@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -26,11 +25,14 @@
 
 #ifdef _WINDOWS
 #define EFI_CALL
+#define force_inline __forceinline
 #else
-#define EFI_CALL [[gnu::ms_abi]]
+#define EFI_CALL __attribute__((ms_abi))
+#define force_inline __attribute__((always_inline))
 #endif
 
-#define pure [[nodiscard]]
+#define nodiscard [[nodiscard]]
+#define noreturn [[noreturn]]
 
 namespace efi {
 
@@ -216,5 +218,8 @@ class Table {
 consteval auto revision(uint16_t major, uint16_t point) noexcept -> uint32_t {
   return (static_cast<uint32_t>(major) << 16) | point;
 }
+
+template <typename T>
+concept IsProtocol = requires(T) { T::Guid->Guid; };
 
 }  // namespace efi

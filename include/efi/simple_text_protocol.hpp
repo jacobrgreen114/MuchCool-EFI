@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 #ifndef __cplusplus
@@ -90,15 +89,15 @@ class SimpleTextInputProtocol final {
   auto operator=(const SimpleTextInputProtocol&)
       -> SimpleTextInputProtocol& = delete;
 
-  auto reset(bool extended_verification = false) noexcept {
+  force_inline auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  auto read_key_stroke(InputKey* out_key) noexcept {
+  force_inline auto read_key_stroke(InputKey* out_key) noexcept {
     return read_key_stroke_(this, out_key);
   }
 
-  auto wait_event() noexcept {
+  force_inline auto wait_event() noexcept {
     return wait_for_key_;
   }
 
@@ -161,39 +160,40 @@ class SimpleTextOutputProtocol final {
   auto operator=(const SimpleTextOutputProtocol&)
       -> SimpleTextOutputProtocol& = delete;
 
-  auto reset(bool extended_verification = false) noexcept {
+  force_inline auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  auto output_string(const char16_t* str) noexcept {
+  force_inline auto output_string(const char16_t* str) noexcept {
     return output_string_(this, str);
   }
-  auto test_string(const char16_t* str) noexcept {
+
+  force_inline auto test_string(const char16_t* str) noexcept {
     return test_string_(this, str);
   }
 
-  auto query_mode(uintn_t mode, uintn_t* out_columns,
+  force_inline auto query_mode(uintn_t mode, uintn_t* out_columns,
                   uintn_t* out_rows) noexcept {
     return query_mode_(this, mode, out_columns, out_rows);
   }
 
-  auto set_mode(uintn_t mode) noexcept {
+  force_inline auto set_mode(uintn_t mode) noexcept {
     return set_mode_(this, mode);
   }
 
-  auto set_attribute(TextAttribute attribute) noexcept {
+  force_inline auto set_attribute(TextAttribute attribute) noexcept {
     return set_attribute_(this, attribute);
   }
 
-  auto clear_screen() noexcept {
+  force_inline auto clear_screen() noexcept {
     return clear_screen_(this);
   }
 
-  auto set_cursor_position(uintn_t column, uintn_t row) noexcept {
+  force_inline auto set_cursor_position(uintn_t column, uintn_t row) noexcept {
     return set_cursor_position_(this, column, row);
   }
 
-  auto enable_cursor(bool visible) noexcept {
+  force_inline auto enable_cursor(bool visible) noexcept {
     return enable_cursor_(this, visible);
   }
 

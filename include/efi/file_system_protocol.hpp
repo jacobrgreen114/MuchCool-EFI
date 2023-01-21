@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -42,7 +41,7 @@ class SimpleFileSystemProtocol final {
   auto operator=(const SimpleFileSystemProtocol&)
       -> SimpleFileSystemProtocol& = delete;
 
-  auto open_volume(FileProtocol** root) noexcept {
+  force_inline auto open_volume(FileProtocol** root) noexcept {
     return open_volume_(this, root);
   }
 

@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -38,10 +37,10 @@ class EdidDiscoveredProtocol final {
   auto operator=(const EdidDiscoveredProtocol&)
       -> EdidDiscoveredProtocol& = delete;
 
-  pure auto size() const {
+  nodiscard auto size() const {
     return size_of_edid_;
   }
-  pure auto edid() const {
+  nodiscard auto edid() const {
     return edid_;
   }
 
@@ -65,10 +64,10 @@ class EdidActiveProtocol final {
   auto operator=(EdidActiveProtocol&&) -> EdidActiveProtocol&      = delete;
   auto operator=(const EdidActiveProtocol&) -> EdidActiveProtocol& = delete;
 
-  pure auto size() const {
+  nodiscard auto size() const {
     return size_of_edid_;
   }
-  pure auto edid() const {
+  nodiscard auto edid() const {
     return edid_;
   }
 
@@ -96,8 +95,8 @@ class EdidOverrideProtocol final {
   auto operator=(EdidOverrideProtocol&&) -> EdidOverrideProtocol&      = delete;
   auto operator=(const EdidOverrideProtocol&) -> EdidOverrideProtocol& = delete;
 
-  auto get_edid(const Handle* child_handle, uint32_t* attributes,
-                uintn_t* edid_size, uint8_t** edid) noexcept {
+  force_inline auto get_edid(const Handle* child_handle, uint32_t* attributes,
+                             uintn_t* edid_size, uint8_t** edid) noexcept {
     return get_edid_(this, child_handle, attributes, edid_size, edid);
   }
 

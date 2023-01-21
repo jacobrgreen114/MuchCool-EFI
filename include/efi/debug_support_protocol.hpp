@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -87,29 +86,31 @@ class DebugSupportProtocol final {
   auto operator=(const DebugSupportProtocol &)
       -> DebugSupportProtocol & = delete;
 
-  pure auto architecture() const {
+  nodiscard auto architecture() const {
     return isa_;
   }
 
-  auto get_max_processor_index(uintn_t *max_processor_index) noexcept {
+  force_inline auto get_max_processor_index(
+      uintn_t *max_processor_index) noexcept {
     return get_maximum_processor_index_(this, max_processor_index);
   }
 
-  auto register_periodic_callback(uintn_t processor_index,
-                                  PeriodicCallback periodic_callback) noexcept {
+  force_inline auto register_periodic_callback(
+      uintn_t processor_index, PeriodicCallback periodic_callback) noexcept {
     return register_periodic_callback_(this, processor_index,
                                        periodic_callback);
   }
 
-  auto register_exception_callback(uintn_t processor_index,
-                                   ExceptionCallback exception_callback,
-                                   ExceptionType exception_type) noexcept {
+  force_inline auto register_exception_callback(
+      uintn_t processor_index, ExceptionCallback exception_callback,
+      ExceptionType exception_type) noexcept {
     return register_exception_callback_(this, processor_index,
                                         exception_callback, exception_type);
   }
 
-  auto invalidate_instruction_cache(uintn_t processor_index, void *start,
-                                    uint64_t length) noexcept {
+  force_inline auto invalidate_instruction_cache(uintn_t processor_index,
+                                                 void *start,
+                                                 uint64_t length) noexcept {
     return invalidate_instruction_cache_(this, processor_index, start, length);
   }
 

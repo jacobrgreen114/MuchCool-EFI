@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -132,99 +131,108 @@ class RuntimeServices final : public Table {
   auto operator=(RuntimeServices&&) -> RuntimeServices&      = delete;
   auto operator=(const RuntimeServices&) -> RuntimeServices& = delete;
 
-  auto get_time(Time* time, TimeCapabilities* capabilities) noexcept {
+  force_inline auto get_time(Time* time,
+                             TimeCapabilities* capabilities) noexcept {
     return get_time_(time, capabilities);
   }
 
-  auto set_time(const Time& time) noexcept {
+  force_inline auto set_time(const Time& time) noexcept {
     return set_time_(time);
   }
 
-  auto get_wakeup_time(bool* enabled, bool* pending, Time* time) noexcept {
+  force_inline auto get_wakeup_time(bool* enabled, bool* pending,
+                                    Time* time) noexcept {
     return get_wakeup_time_(enabled, pending, time);
   }
 
-  auto set_wakeup_time() noexcept {
+  force_inline auto set_wakeup_time() noexcept {
     return set_wakeup_time_(false, nullptr);
   }
 
-  auto set_wakeup_time(const Time& time) noexcept {
+  force_inline auto set_wakeup_time(const Time& time) noexcept {
     return set_wakeup_time_(true, &time);
   }
 
-  auto set_virtual_address_map(uintn_t memory_map_size, uintn_t descriptor_size,
-                               uintn_t descriptor_version,
-                               const MemoryDescriptor* virtual_map) noexcept {
+  force_inline auto set_virtual_address_map(
+      uintn_t memory_map_size, uintn_t descriptor_size,
+      uintn_t descriptor_version,
+      const MemoryDescriptor* virtual_map) noexcept {
     return set_virtual_address_map_(memory_map_size, descriptor_size,
                                     descriptor_version, virtual_map);
   }
 
-  auto convert_pointer(uintn_t debug_disposition, void** address) noexcept {
+  force_inline auto convert_pointer(uintn_t debug_disposition,
+                                    void** address) noexcept {
     return convert_pointer_(debug_disposition, address);
   }
 
-  auto get_variable(const char16_t* variable_name, const Guid& vendor_guid,
-                    VariableAttribute* attributes, uintn_t* data_size,
-                    void* data) noexcept {
+  force_inline auto get_variable(const char16_t* variable_name,
+                                 const Guid& vendor_guid,
+                                 VariableAttribute* attributes,
+                                 uintn_t* data_size, void* data) noexcept {
     return get_variable_(variable_name, vendor_guid, attributes, data_size,
                          data);
   }
 
   template <typename T>
-  auto get_variable(const char16_t* variable_name, const Guid& vendor_guid,
-                    uint32_t* attributes, T* data) noexcept {
+  force_inline auto get_variable(const char16_t* variable_name,
+                                 const Guid& vendor_guid, uint32_t* attributes,
+                                 T* data) noexcept {
     return get_variable(variable_name, vendor_guid, attributes, sizeof(T),
                         data);
   }
 
-  auto set_variable(const char16_t* variable_name, const Guid& vendor_guid,
-                    VariableAttribute attributes, uintn_t data_size,
-                    const void* data) noexcept {
+  force_inline auto set_variable(const char16_t* variable_name,
+                                 const Guid& vendor_guid,
+                                 VariableAttribute attributes,
+                                 uintn_t data_size, const void* data) noexcept {
     return set_variable_(variable_name, vendor_guid, attributes, data_size,
                          data);
   }
 
   template <typename T>
-  auto set_variable(const char16_t* variable_name, const Guid* vendor_guid,
-                    uint32_t attributes, const T& data) {
+  force_inline auto set_variable(const char16_t* variable_name,
+                                 const Guid* vendor_guid, uint32_t attributes,
+                                 const T& data) {
     return set_variable(variable_name, vendor_guid, attributes, sizeof(T),
                         &data);
   }
 
-  auto get_next_variable_name(uintn_t* variable_name_size,
-                              char16_t* variable_name,
-                              Guid* vendor_guid) noexcept {
+  force_inline auto get_next_variable_name(uintn_t* variable_name_size,
+                                           char16_t* variable_name,
+                                           Guid* vendor_guid) noexcept {
     return get_next_variable_name_(variable_name_size, variable_name,
                                    vendor_guid);
   }
 
-  auto get_next_high_monotonic_count(uint32_t* high_count) noexcept {
+  force_inline auto get_next_high_monotonic_count(
+      uint32_t* high_count) noexcept {
     return get_next_high_monotonic_count_(high_count);
   }
 
-  [[noreturn]] auto reset_system(ResetType reset_type, Status reset_status,
-                                 uintn_t data_size      = 0,
-                                 const void* reset_data = nullptr) noexcept {
+  noreturn force_inline auto reset_system(
+      ResetType reset_type, Status reset_status, uintn_t data_size = 0,
+      const void* reset_data = nullptr) noexcept {
     reset_system_(reset_type, reset_status, data_size, reset_data);
   }
 
   template <typename T>
-  [[noreturn]] auto reset_system(ResetType reset_type, Status reset_status,
-                                 const T& data) noexcept {
+  noreturn force_inline auto reset_system(ResetType reset_type,
+                                          Status reset_status,
+                                          const T& data) noexcept {
     reset_system(reset_type, reset_status, sizeof(T), &data);
   }
 
-  auto update_capsule(CapsuleHeader** capsule_header_array,
-                      uintn_t capsule_count,
-                      PhysicalAddress scatter_gather_list) noexcept {
+  force_inline auto update_capsule(
+      CapsuleHeader** capsule_header_array, uintn_t capsule_count,
+      PhysicalAddress scatter_gather_list) noexcept {
     return update_capsule_(capsule_header_array, capsule_count,
                            scatter_gather_list);
   }
 
-  auto query_capsule_capabilities(CapsuleHeader** capsule_header_array,
-                                  uintn_t capsule_count,
-                                  uint64_t* maximum_capsule_size,
-                                  ResetType* reset_type) noexcept {
+  force_inline auto query_capsule_capabilities(
+      CapsuleHeader** capsule_header_array, uintn_t capsule_count,
+      uint64_t* maximum_capsule_size, ResetType* reset_type) noexcept {
     return query_capsule_capabilities_(capsule_header_array, capsule_count,
                                        maximum_capsule_size, reset_type);
   }

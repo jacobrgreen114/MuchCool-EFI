@@ -14,7 +14,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -98,30 +97,31 @@ class SimpleTextInputExProtocol final {
   auto operator=(const SimpleTextInputExProtocol&)
       -> SimpleTextInputExProtocol& = delete;
 
-  auto reset(bool extended_verificatin = false) noexcept {
+  force_inline auto reset(bool extended_verificatin = false) noexcept {
     return reset_(this, extended_verificatin);
   }
 
-  auto read_keystroke(KeyData* data) noexcept {
+  force_inline auto read_keystroke(KeyData* data) noexcept {
     return read_keystroke_(this, data);
   }
 
-  pure auto event() const noexcept {
+  nodiscard auto event() const noexcept {
     return wait_for_key_;
   }
 
-  auto set_state(const KeyToggleState& key_toggle_state) noexcept {
+  force_inline auto set_state(const KeyToggleState& key_toggle_state) noexcept {
     return set_state_(this, key_toggle_state);
   }
 
-  auto register_key_notify(const KeyData& key_data,
-                           KeyNotifyFunction key_notify_function,
-                           NotifyHandle* notify_handle) noexcept {
+  force_inline auto register_key_notify(const KeyData& key_data,
+                                        KeyNotifyFunction key_notify_function,
+                                        NotifyHandle* notify_handle) noexcept {
     return register_key_notify_(this, key_data, key_notify_function,
                                 notify_handle);
   }
 
-  auto unregister_key_notify(NotifyHandle notification_handle) noexcept {
+  force_inline auto unregister_key_notify(
+      NotifyHandle notification_handle) noexcept {
     return unregister_key_notify_(this, notification_handle);
   }
 
@@ -132,4 +132,4 @@ class SimpleTextInputExProtocol final {
                   {0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa}};
 };
 
-}
+}  // namespace efi

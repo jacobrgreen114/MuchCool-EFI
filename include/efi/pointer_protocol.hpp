@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 #ifndef __cplusplus
@@ -63,19 +62,19 @@ class SimplePointerProtocol final {
   auto operator=(const SimplePointerProtocol&)
       -> SimplePointerProtocol& = delete;
 
-  auto reset(bool extended_verification = false) noexcept {
+  force_inline auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  auto get_state(SimplePointerState* out_state) noexcept {
+  force_inline auto get_state(SimplePointerState* out_state) noexcept {
     return get_state_(this, out_state);
   }
 
-  pure auto event() const noexcept {
+  nodiscard auto event() const noexcept {
     return wait_for_input_;
   }
 
-  pure auto mode() const -> auto& {
+  nodiscard auto mode() const -> auto& {
     return *mode_;
   }
 
@@ -109,8 +108,8 @@ class AbsolutePointerProtocol final {
   using ResetFn    = Status(EFI_CALL*)(AbsolutePointerProtocol* self,
                                     bool extended_verification) noexcept;
 
-  using GetStateFn = Status(EFI_CALL*)(AbsolutePointerProtocol* self,
-                                       AbsolutePointerState* out_state) noexcept;
+  using GetStateFn = Status(EFI_CALL*)(
+      AbsolutePointerProtocol* self, AbsolutePointerState* out_state) noexcept;
 
   const ResetFn reset_;
   const GetStateFn get_state_;
@@ -135,9 +134,13 @@ class AbsolutePointerProtocol final {
     return get_state_(this, out_state);
   }
 
-  pure auto event() const noexcept { return wait_for_input_; }
+  nodiscard auto event() const noexcept {
+    return wait_for_input_;
+  }
 
-  pure auto mode() const noexcept -> auto& { return *mode_;}
+  nodiscard auto mode() const noexcept -> auto& {
+    return *mode_;
+  }
 
   static constexpr auto Guid =
       ::efi::Guid{0x8D59D32B,

@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -100,23 +99,24 @@ class GraphicsOutputProtocol final {
   auto operator=(const GraphicsOutputProtocol&)
       -> GraphicsOutputProtocol& = delete;
 
-  auto query_mode(uint32_t mode_number, uintn_t* size_of_info,
-                  GraphicsOutputModeInformation** info) noexcept {
+  force_inline auto query_mode(uint32_t mode_number, uintn_t* size_of_info,
+                               GraphicsOutputModeInformation** info) noexcept {
     return query_mode_(this, mode_number, size_of_info, info);
   }
 
-  auto set_mode(uint32_t mode) noexcept {
+  force_inline auto set_mode(uint32_t mode) noexcept {
     return set_mode_(this, mode);
   }
 
-  auto blt(BltPixel* blt_buffer, BltOperation blt_op, uintn_t source_x,
-           uintn_t source_y, uintn_t dest_x, uintn_t dest_y, uintn_t width,
-           uintn_t height, uintn_t delta) noexcept {
+  force_inline auto blt(BltPixel* blt_buffer, BltOperation blt_op,
+                        uintn_t source_x, uintn_t source_y, uintn_t dest_x,
+                        uintn_t dest_y, uintn_t width, uintn_t height,
+                        uintn_t delta) noexcept {
     return blt_(this, blt_buffer, blt_op, source_x, source_y, dest_x, dest_y,
                 width, height, delta);
   }
 
-  pure auto mode() const noexcept -> auto& {
+  nodiscard auto mode() const noexcept -> auto& {
     return *mode_;
   }
 

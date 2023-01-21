@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -90,45 +89,44 @@ class ArpProtocol final {
   auto operator=(ArpProtocol&&) -> ArpProtocol&      = delete;
   auto operator=(const ArpProtocol&) -> ArpProtocol& = delete;
 
-  auto configure(const ArpConfigData& data) noexcept {
+  force_inline auto configure(const ArpConfigData& data) noexcept {
     return configure_(this, &data);
   }
 
-  auto reset() noexcept {
+  force_inline auto reset() noexcept {
     return configure_(this, nullptr);
   }
 
-  auto add(bool deny_flag, const void* target_sw_address,
-           const void* target_hw_address, uint32_t timeout_value,
-           bool overwrite) noexcept {
+  force_inline auto add(bool deny_flag, const void* target_sw_address,
+                        const void* target_hw_address, uint32_t timeout_value,
+                        bool overwrite) noexcept {
     return add_(this, deny_flag, target_sw_address, target_hw_address,
                 timeout_value, overwrite);
   }
 
-  auto find(bool by_sw_address, const void* address_buffer,
-            uint32_t* entry_length, uint32_t* entry_count,
-            ArpFindData** entries, bool refresh) noexcept {
+  force_inline auto find(bool by_sw_address, const void* address_buffer,
+                         uint32_t* entry_length, uint32_t* entry_count,
+                         ArpFindData** entries, bool refresh) noexcept {
     return find_(this, by_sw_address, address_buffer, entry_length, entry_count,
                  entries, refresh);
   }
 
-  auto delete_entry(bool by_sw_address,
-                    const void* address_buffer) noexcept {
+  force_inline auto delete_entry(bool by_sw_address,
+                                 const void* address_buffer) noexcept {
     return delete_(this, by_sw_address, address_buffer);
   }
 
-  auto flush() noexcept {
+  force_inline auto flush() noexcept {
     return flush_(this);
   }
 
-  auto request(const void* target_sw_address,
-               Event resolved_event,
-               void* target_hw_address) noexcept {
+  force_inline auto request(const void* target_sw_address, Event resolved_event,
+                            void* target_hw_address) noexcept {
     return request_(this, target_sw_address, resolved_event, target_hw_address);
   }
 
-  auto cancel(const void* target_sw_address,
-              Event resolved_event) noexcept {
+  force_inline auto cancel(const void* target_sw_address,
+                           Event resolved_event) noexcept {
     return cancel_(this, target_sw_address, resolved_event);
   }
 

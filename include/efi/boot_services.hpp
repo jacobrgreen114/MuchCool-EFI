@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 #ifndef __cplusplus
@@ -90,8 +89,7 @@ class OpenProtocolInformationEntry {
  private:
   Handle agent_handle_;
   Handle controller_handle_;
-  // todo : check if this is OpenProtocolAttribute
-  uint32_t attributes_;
+  OpenProtocolAttribute attributes_;
   uint32_t open_count_;
 };
 
@@ -156,25 +154,25 @@ class BootServices final : public Table {
       const Guid* protocol, Event event, void** registration) noexcept;
 
   using LocateHandleFn     = Status(EFI_CALL*)(LocateSearchType search_type,
-                                           const Guid* protocol,
+                                           const Guid& protocol,
                                            const void* search_key,
                                            uintn_t* buffer_size,
                                            Handle* buffer) noexcept;
 
   using HandleProtocolFn   = Status(EFI_CALL*)(Handle handle,
-                                             const Guid* protocol,
+                                             const Guid& protocol,
                                              void** interface) noexcept;
 
-  using LocateDevicePathFn = Status(EFI_CALL*)(const Guid* protocol,
+  using LocateDevicePathFn = Status(EFI_CALL*)(const Guid& protocol,
                                                DevicePathProtocol** device_path,
                                                Handle* device) noexcept;
 
   using OpenProtocolFn =
-      Status(EFI_CALL*)(Handle handle, const Guid* protocol, void** interface,
+      Status(EFI_CALL*)(Handle handle, const Guid& protocol, void** interface,
                         Handle agent_handle, Handle controller_handle,
                         OpenProtocolAttribute attributes) noexcept;
 
-  using CloseProtocolFn = Status(EFI_CALL*)(Handle handle, const Guid* protocol,
+  using CloseProtocolFn = Status(EFI_CALL*)(Handle handle, const Guid& protocol,
                                             Handle agent_handle,
                                             Handle controller_handle) noexcept;
 
@@ -201,7 +199,7 @@ class BootServices final : public Table {
                                                  uintn_t* num_handles,
                                                  Handle** buffer) noexcept;
 
-  using LocateProtocolFn     = Status(EFI_CALL*)(const Guid* protocol,
+  using LocateProtocolFn     = Status(EFI_CALL*)(const Guid& protocol,
                                              const void* registration,
                                              void** interface) noexcept;
 
@@ -228,8 +226,8 @@ class BootServices final : public Table {
                                    uintn_t exit_data_size,
                                    const char16_t* exit_data) noexcept;
 
-  using ExitSimpleTextInputProtocolFn =
-      Status(EFI_CALL*)(Handle image_handle, uintn_t map_key) noexcept;
+  using ExitBootServicesFn = Status(EFI_CALL*)(Handle image_handle,
+                                               uintn_t map_key) noexcept;
 
   using SetWatchdogTimerFn = Status(EFI_CALL*)(
       uintn_t timeout, uint64_t watchdog_code, uintn_t data_size,
@@ -284,7 +282,7 @@ class BootServices final : public Table {
   const StartImageFn image_start_;
   const ExitFn exit_;
   const UnloadImageFn unload_image_;
-  const ExitSimpleTextInputProtocolFn exit_boot_services_;
+  const ExitBootServicesFn exit_boot_services_;
 
   const GetNextMonotonicCountFn get_next_monotonic_count_;
   const StallFn stall_;
@@ -320,19 +318,293 @@ class BootServices final : public Table {
   auto operator=(BootServices&&) -> BootServices&      = delete;
   auto operator=(const BootServices&) -> BootServices& = delete;
 
-  static constexpr uint64_t Signature                  = 0x56524553544f4f42;
+#pragma region TPL
+
+  force_inline auto raise_tpl(TPL new_tpl) noexcept {
+    return raise_tpl_(new_tpl);
+  }
+
+  force_inline auto restore_tpl(TPL old_tpl) noexcept {
+    return restore_tpl_(old_tpl);
+  }
+
+#pragma endregion
+
+#pragma region Event
+
+  force_inline auto create_event(EventType type, TPL notify_tpl,
+                                 EventNotify notify_function, void* context,
+                                 Event* event) noexcept {
+    return create_event_(type, notify_tpl, notify_function, context, event);
+  }
+
+  force_inline auto close_event(Event event) noexcept {
+    return close_event_(event);
+  }
+
+  force_inline auto signal_event(Event event) noexcept {
+    return signal_event_(event);
+  }
+
+  force_inline auto wait_for_events(uintn_t num_of_events, const Event* event,
+                                    uintn_t* index) noexcept {
+    return wait_for_event_(num_of_events, event, index);
+  }
+
+  force_inline auto check_event(Event event) noexcept {
+    return check_event_(event);
+  }
+
+  // Trigger Time is 100ns periods
+  force_inline auto set_timer(Event event, TimerDelay type,
+                              uint64_t trigger_time) noexcept {
+    return set_timer_(event, type, trigger_time);
+  }
+
+#pragma endregion
+
+#pragma region Memory Allocation
+
+  force_inline auto allocate_pages(AllocateType type, MemoryType memory_type,
+                                   uintn_t pages,
+                                   PhysicalAddress* memory) noexcept {
+    return allocate_pages_(type, memory_type, pages, memory);
+  }
+
+  force_inline auto free_pages(PhysicalAddress memory, uintn_t pages) noexcept {
+    return free_pages_(memory, pages);
+  }
+
+  force_inline auto get_memory_map(uintn_t* memory_map_size,
+                                   MemoryDescriptor* memory_map,
+                                   uintn_t* map_key, uintn_t* descriptor_size,
+                                   uint32_t* descriptor_version) noexcept {
+    return get_memory_map_(memory_map_size, memory_map, map_key,
+                           descriptor_size, descriptor_version);
+  }
+
+  force_inline auto allocate_pool(MemoryType pool_type, uintn_t size,
+                                  void** buffer) noexcept {
+    return allocate_pool_(pool_type, size, buffer);
+  }
+
+  force_inline auto free_pool(void* buffer) noexcept {
+    return free_pool_(buffer);
+  }
+
+#pragma endregion
+
+#pragma region Image
+
+  force_inline auto load_image(bool boot_policy, Handle parent_image_handle,
+                               const DevicePathProtocol* device_path,
+                               const void* source_buffer, uintn_t source_size,
+                               Handle* image_handle) noexcept {
+    return load_image_(boot_policy, parent_image_handle, device_path,
+                       source_buffer, source_size, image_handle);
+  }
+
+  force_inline auto start_image(Handle image_handle, uintn_t* exit_data_size,
+                                char16_t** exit_data) noexcept {
+    return image_start_(image_handle, exit_data_size, exit_data);
+  }
+
+  force_inline auto exit(Handle image_handle, Status exit_status,
+                         uintn_t exit_data_size, const char16_t* exit_data) {
+    return exit_(image_handle, exit_status, exit_data_size, exit_data);
+  }
+
+  force_inline auto exit(Handle image_handle, Status exit_status) {
+    return exit(image_handle, exit_status, 0, nullptr);
+  }
+
+  force_inline auto exit_boot_services(Handle image_handle,
+                                       uintn_t map_key) noexcept {
+    return exit_boot_services_(image_handle, map_key);
+  }
+
+#pragma endregion
+
+#pragma region Protocols
+
+  force_inline auto locate_handle(LocateSearchType search_type,
+                                  const Guid& protocol, const void* search_key,
+                                  uintn_t* buffer_size,
+                                  Handle* buffer) noexcept {
+    return locate_handle_(search_type, protocol, search_key, buffer_size,
+                          buffer);
+  }
+
+  force_inline auto handle_protocol(Handle handle, const Guid& protocol,
+                                    void** interface) noexcept {
+    return handle_protocol_(handle, protocol, interface);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto handle_protocol(Handle handle,
+                                    Protocol** interface) noexcept {
+    return handle_protocol_(handle, Protocol::Guid, interface);
+  }
+
+  force_inline auto locate_device_path(const Guid& protocol,
+                                       DevicePathProtocol** device_path,
+                                       Handle* device) noexcept {
+    return locate_device_path_(protocol, device_path, device);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto locate_device_path(DevicePathProtocol** device_path,
+                                       Handle* device) noexcept {
+    return locate_device_path_(Protocol::Guid, device_path, device);
+  }
+
+  force_inline auto open_protocol(Handle handle, const Guid& protocol,
+                                  void** interface, Handle agent_handle,
+                                  Handle controller_handle,
+                                  OpenProtocolAttribute attributes) noexcept {
+    return open_protocol_(handle, protocol, interface, agent_handle,
+                          controller_handle, attributes);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto open_protocol(Handle handle, Protocol** interface,
+                                  Handle agent_handle, Handle controller_handle,
+                                  OpenProtocolAttribute attributes) noexcept {
+    return open_protocol_(handle, Protocol::Guid, interface, agent_handle,
+                          controller_handle, attributes);
+  }
+
+  force_inline auto close_protocol(Handle handle, const Guid& protocol,
+                                   Handle agent_handle,
+                                   Handle controller_handle) noexcept {
+    return close_protocol_(handle, protocol, agent_handle, controller_handle);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto close_protocol(Handle handle, Handle agent_handle,
+                                   Handle controller_handle) noexcept {
+    return close_protocol_(handle, Protocol::Guid, agent_handle,
+                           controller_handle);
+  }
+
+  force_inline auto protocols_per_handle(
+      Handle controller_handle, Guid*** protocol_buffer,
+      uintn_t* protocol_buffer_count) noexcept {
+    return protocols_per_handle_(controller_handle, protocol_buffer,
+                                 protocol_buffer_count);
+  }
+
+  force_inline auto locate_handle_buffer(LocateSearchType search_type,
+                                         const Guid* protocol,
+                                         const void* search_key,
+                                         uintn_t* num_handles,
+                                         Handle** buffer) noexcept {
+    return locate_handle_buffer_(search_type, protocol, search_key, num_handles,
+                                 buffer);
+  }
+
+  force_inline auto locate_handle_buffer(uintn_t* num_handles,
+                                         Handle** buffer) noexcept {
+    return locate_handle_buffer_(LocateSearchType::AllHandles, nullptr, nullptr,
+                                 num_handles, buffer);
+  }
+
+  force_inline auto locate_handle_buffer(const Guid& protocol,
+                                         uintn_t* num_handles,
+                                         Handle** buffer) noexcept {
+    return locate_handle_buffer_(LocateSearchType::ByProtocol, &protocol,
+                                 nullptr, num_handles, buffer);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto locate_handle_buffer(uintn_t* num_handles,
+                                         Handle** buffer) noexcept {
+    return locate_handle_buffer_(LocateSearchType::ByProtocol, &Protocol::Guid,
+                                 nullptr, num_handles, buffer);
+  }
+
+  force_inline auto locate_handle_buffer(const void* search_key,
+                                         uintn_t* num_handles,
+                                         Handle** buffer) noexcept {
+    return locate_handle_buffer_(LocateSearchType::ByRegisterNotify, nullptr,
+                                 search_key, num_handles, buffer);
+  }
+
+  force_inline auto locate_protocol(const Guid& protocol,
+                                    const void* registration,
+                                    void** interface) noexcept {
+    return locate_protocol_(protocol, registration, interface);
+  }
+
+  template <IsProtocol Protocol>
+  force_inline auto locate_protocol(Protocol** interface) noexcept {
+    return locate_protocol_(Protocol::Guid, nullptr, interface);
+  }
+
+#pragma endregion
+
+#pragma region Misc
+
+  // Watchdog code must be greater than 0xFFFF
+  force_inline auto set_watchdog_timer(uintn_t timeout, uint64_t watchdog_code,
+                                       uintn_t data_size,
+                                       const char16_t* watchdog_data) noexcept {
+    return set_watchdog_timer_(timeout, watchdog_code, data_size,
+                               watchdog_data);
+  }
+
+  force_inline auto set_watchdog_timer(uintn_t timeout_sec) noexcept {
+    return set_watchdog_timer_(timeout_sec, UINT64_MAX, 0, nullptr);
+  }
+
+  force_inline auto stall(uintn_t microseconds) noexcept {
+    return stall_(microseconds);
+  }
+
+  force_inline auto stall(float seconds) noexcept {
+    constexpr auto microseconds_per_second = 1'000'000;
+    return stall_(static_cast<uintn_t>(seconds * microseconds_per_second));
+  }
+
+  force_inline auto copy_mem(void* destination, const void* source,
+                             uintn_t length) noexcept {
+    return copy_mem_(destination, source, length);
+  }
+
+  force_inline auto set_mem(void* buffer, uintn_t size,
+                            uint8_t value) noexcept {
+    return set_mem_(buffer, size, value);
+  }
+
+  force_inline auto get_next_monotonic_count(uint64_t* count) noexcept {
+    return get_next_monotonic_count_(count);
+  }
+
+  force_inline auto calculate_crc32(const void* data, uintn_t data_size,
+                                    uint32_t* crc32) noexcept {
+    return calculate_crc32_(data, data_size, crc32);
+  }
+
+#pragma endregion
+
+  static constexpr uint64_t Signature = 0x56524553544f4f42;
 };
 
-static const Event TimerEvent          = reinterpret_cast<Event>(0x80000000);
-static const Event RuntimeEvent        = reinterpret_cast<Event>(0x40000000);
-static const Event RuntimeContextEvent = reinterpret_cast<Event>(0x20000000);
+static const Event TimerEvent =
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x80000000));
+static const Event RuntimeEvent =
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x40000000));
+static const Event RuntimeContextEvent =
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x20000000));
 
-static const Event NotifyWaitEvent     = reinterpret_cast<Event>(0x00000100);
-static const Event NotifySignalEvent   = reinterpret_cast<Event>(0x00000200);
+static const Event NotifyWaitEvent =
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x00000100));
+static const Event NotifySignalEvent =
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x00000200));
 
 static const Event SignalExitBootServicesEvent =
-    reinterpret_cast<Event>(0x00000201);
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x00000201));
 static const Event SignalVirtualAddressChangeEvent =
-    reinterpret_cast<Event>(0x60000202);
+    reinterpret_cast<Event>(static_cast<uintptr_t>(0x60000202));
 
 }  // namespace efi

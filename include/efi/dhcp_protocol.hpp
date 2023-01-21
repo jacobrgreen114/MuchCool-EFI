@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -251,48 +250,50 @@ class DHCP4Protocol final {
   auto operator=(DHCP4Protocol &&) -> DHCP4Protocol      & = delete;
   auto operator=(const DHCP4Protocol &) -> DHCP4Protocol & = delete;
 
-  auto get_mode_data(Dhcp4ModeData *dhcp4_mode_data) noexcept {
+  force_inline auto get_mode_data(Dhcp4ModeData *dhcp4_mode_data) noexcept {
     return get_mode_data_(this, dhcp4_mode_data);
   }
 
-  auto configure(const Dhcp4ModeData &data) noexcept {
+  force_inline auto configure(const Dhcp4ModeData &data) noexcept {
     return configure_(this, &data);
   }
 
-  auto reset() noexcept {
+  force_inline auto reset() noexcept {
     return configure_(this, nullptr);
   }
 
-  auto start(Event completion_event) noexcept {
+  force_inline auto start(Event completion_event) noexcept {
     return start_(this, completion_event);
   }
 
-  auto renew_rebind(bool rebid_request, Event completion_event) noexcept {
+  force_inline auto renew_rebind(bool rebid_request,
+                                 Event completion_event) noexcept {
     return renew_rebind_(this, rebid_request, completion_event);
   }
 
-  auto release() noexcept {
+  force_inline auto release() noexcept {
     return release_(this);
   }
 
-  auto stop() noexcept {
+  force_inline auto stop() noexcept {
     return stop_(this);
   }
 
-  auto build(const Dhcp4Packet &seed_packet, uint32_t delete_count,
-             const uint8_t *delete_list, uint32_t append_count,
-             const Dhcp4PacketOption *append_list[],
-             Dhcp4Packet **new_packet) noexcept {
+  force_inline auto build(const Dhcp4Packet &seed_packet, uint32_t delete_count,
+                          const uint8_t *delete_list, uint32_t append_count,
+                          const Dhcp4PacketOption *append_list[],
+                          Dhcp4Packet **new_packet) noexcept {
     return build_(this, &seed_packet, delete_count, delete_list, append_count,
                   append_list, new_packet);
   }
 
-  auto transmit_recieve(const Dhcp4TransmitReceiveToken &token) noexcept {
+  force_inline auto transmit_recieve(
+      const Dhcp4TransmitReceiveToken &token) noexcept {
     return transmit_recieve_(this, token);
   }
 
-  auto parse(Dhcp4Packet *packet, uint32_t *option_count,
-             Dhcp4PacketOption *packet_option_list[]) noexcept {
+  force_inline auto parse(Dhcp4Packet *packet, uint32_t *option_count,
+                          Dhcp4PacketOption *packet_option_list[]) noexcept {
     return parse_(this, packet, option_count, packet_option_list);
   }
 

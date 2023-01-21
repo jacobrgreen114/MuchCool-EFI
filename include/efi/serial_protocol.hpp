@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #pragma once
 
@@ -106,38 +105,39 @@ class SerialIOProtocol final {
   auto operator=(SerialIOProtocol&&) -> SerialIOProtocol&      = delete;
   auto operator=(const SerialIOProtocol&) -> SerialIOProtocol& = delete;
 
-  auto reset() noexcept {
+  force_inline auto reset() noexcept {
     return reset_(this);
   }
 
-  auto set_attribute(uint64_t baud_rate, uint32_t recieve_fifo_depth,
-                     uint32_t timeout, ParityType parity_type, uint8_t databits,
-                     StopBits stopbits) noexcept {
+  force_inline auto set_attribute(uint64_t baud_rate,
+                                  uint32_t recieve_fifo_depth, uint32_t timeout,
+                                  ParityType parity_type, uint8_t databits,
+                                  StopBits stopbits) noexcept {
     return set_attribute_(this, baud_rate, recieve_fifo_depth, timeout,
                           parity_type, databits, stopbits);
   }
 
-  auto set_control(ControlBits control) noexcept {
+  force_inline auto set_control(ControlBits control) noexcept {
     return set_control_(this, control);
   }
 
-  auto get_control(ControlBits* out_control) noexcept {
+  force_inline auto get_control(ControlBits* out_control) noexcept {
     return get_control_(this, out_control);
   }
 
-  auto write(uintn_t* buffer_size, const void* buffer) noexcept {
+  force_inline auto write(uintn_t* buffer_size, const void* buffer) noexcept {
     return write_(this, buffer_size, buffer);
   }
 
-  auto read(uintn_t* buffer_size, void* buffer) noexcept {
+  force_inline auto read(uintn_t* buffer_size, void* buffer) noexcept {
     return read_(this, buffer_size, buffer);
   }
 
-  pure auto mode() const noexcept -> auto& {
+  nodiscard auto mode() const noexcept -> auto& {
     return *mode_;
   }
 
-  pure auto device_type() const noexcept -> auto& {
+  nodiscard auto device_type() const noexcept -> auto& {
     return *device_type_guid_;
   }
 
