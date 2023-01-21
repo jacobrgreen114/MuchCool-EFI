@@ -11,9 +11,7 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-
-#pragma once
+// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.gma once
 
 #ifndef __cplusplus
 #error
@@ -22,18 +20,18 @@
 #include "system_table.hpp"
 
 #ifdef EFI_INCLUDE_ALL_HEADERS
-#include "pointer_protocol.hpp"
-#include "serial_protocol.hpp"
-#include "graphics_output_protocol.hpp"
-#include "edid_protocol.hpp"
-#include "simple_text_ex_protocol.hpp"
-#include "load_file_protocol.hpp"
-#include "file_system_protocol.hpp"
-#include "file_protocol.hpp"
-#include "disk_io_protocol.hpp"
-#include "block_io_protocol.hpp"
-#include "debug_support_protocol.hpp"
-#include "debug_port_protocol.hpp"
-#include "arp_protocol.hpp"
-#include "dhcp_protocol.hpp"
+#include "efi/protocol/pointer.hpp"
+#include "efi/protocol/serial.hpp"
+#include "efi/protocol/graphics_output.hpp"
+#include "efi/protocol/edid.hpp"
+#include "efi/protocol/simple_text_ex.hpp"
+#include "efi/protocol/load_file.hpp"
+#include "efi/protocol/file_system.hpp"
+#include "efi/protocol/file.hpp"
+#include "efi/protocol/disk_io.hpp"
+#include "efi/protocol/block_io.hpp"
+#include "efi/protocol/debug_support.hpp"
+#include "efi/protocol/debug_port.hpp"
+#include "efi/protocol/arp.hpp"
+#include "efi/protocol/dhcp.hpp"
 #endif

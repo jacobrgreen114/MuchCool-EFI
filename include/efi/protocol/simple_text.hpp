@@ -4,11 +4,13 @@
 //
 // MuchCool-EFI is free software: you can redistribute it and/or modify it under
 // the terms of the GNU General Public License as published by the Free Software
-// Foundation, either version 3 of the License, or (at your option) any later version.
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
 //
 // MuchCool-EFI is distributed in the hope that it will be useful, but WITHOUT
 // ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+// details.
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
@@ -18,7 +20,7 @@
 #error
 #endif
 
-#include "core.hpp"
+#include "efi/core.hpp"
 
 namespace efi {
 
@@ -173,7 +175,7 @@ class SimpleTextOutputProtocol final {
   }
 
   force_inline auto query_mode(uintn_t mode, uintn_t* out_columns,
-                  uintn_t* out_rows) noexcept {
+                               uintn_t* out_rows) noexcept {
     return query_mode_(this, mode, out_columns, out_rows);
   }
 

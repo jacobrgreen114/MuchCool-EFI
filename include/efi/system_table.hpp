@@ -11,9 +11,7 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-
-#pragma once
+// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.gma once
 #ifndef __cplusplus
 #error
 #endif
@@ -21,7 +19,7 @@
 #include "core.hpp"
 #include "boot_services.hpp"
 #include "runtime_services.hpp"
-#include "simple_text_protocol.hpp"
+#include "efi/protocol/simple_text.hpp"
 
 namespace efi {
 

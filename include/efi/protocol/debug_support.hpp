@@ -11,18 +11,16 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-
-#pragma once
+// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.gma once
 
 #ifndef __cplusplus
 #error
 #endif
 
-#include "core.hpp"
+#include "efi/core.hpp"
 
 #if defined(_M_X64) || defined(__x86_64__) || defined(__amd64__)
-#include "platform/x64.hpp"
+#include "efi/platform/x64.hpp"
 #elif
 #error Unsupported platform
 #endif
