@@ -11,9 +11,13 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License along with
-// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.lude "efi/core.hpp"
+// MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
+
+#ifndef __cplusplus
+#error
+#endif
 
 namespace efi {
 
