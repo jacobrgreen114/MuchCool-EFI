@@ -89,43 +89,43 @@ class ArpProtocol final {
   auto operator=(ArpProtocol&&) -> ArpProtocol&      = delete;
   auto operator=(const ArpProtocol&) -> ArpProtocol& = delete;
 
-  force_inline auto configure(const ArpConfigData& data) noexcept {
+  FORCE_INLINE auto configure(const ArpConfigData& data) noexcept {
     return configure_(this, &data);
   }
 
-  force_inline auto reset() noexcept {
+  FORCE_INLINE auto reset() noexcept {
     return configure_(this, nullptr);
   }
 
-  force_inline auto add(bool deny_flag, const void* target_sw_address,
+  FORCE_INLINE auto add(bool deny_flag, const void* target_sw_address,
                         const void* target_hw_address, uint32_t timeout_value,
                         bool overwrite) noexcept {
     return add_(this, deny_flag, target_sw_address, target_hw_address,
                 timeout_value, overwrite);
   }
 
-  force_inline auto find(bool by_sw_address, const void* address_buffer,
+  FORCE_INLINE auto find(bool by_sw_address, const void* address_buffer,
                          uint32_t* entry_length, uint32_t* entry_count,
                          ArpFindData** entries, bool refresh) noexcept {
     return find_(this, by_sw_address, address_buffer, entry_length, entry_count,
                  entries, refresh);
   }
 
-  force_inline auto delete_entry(bool by_sw_address,
+  FORCE_INLINE auto delete_entry(bool by_sw_address,
                                  const void* address_buffer) noexcept {
     return delete_(this, by_sw_address, address_buffer);
   }
 
-  force_inline auto flush() noexcept {
+  FORCE_INLINE auto flush() noexcept {
     return flush_(this);
   }
 
-  force_inline auto request(const void* target_sw_address, Event resolved_event,
+  FORCE_INLINE auto request(const void* target_sw_address, Event resolved_event,
                             void* target_hw_address) noexcept {
     return request_(this, target_sw_address, resolved_event, target_hw_address);
   }
 
-  force_inline auto cancel(const void* target_sw_address,
+  FORCE_INLINE auto cancel(const void* target_sw_address,
                            Event resolved_event) noexcept {
     return cancel_(this, target_sw_address, resolved_event);
   }

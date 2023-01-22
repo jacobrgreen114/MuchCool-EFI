@@ -26,14 +26,31 @@
 
 #ifdef _WINDOWS
 #define EFI_CALL
-#define force_inline __forceinline
+#define FORCE_INLINE __forceinline
 #else
 #define EFI_CALL __attribute__((ms_abi))
 #define force_inline __attribute__((always_inline))
 #endif
 
-#define nodiscard [[nodiscard]]
-#define noreturn [[noreturn]]
+#define NODISCARD [[nodiscard]]
+#define NORETURN [[noreturn]]
+
+#define GETTER NODISCARD FORCE_INLINE
+
+#define DEFINE_ENUM_OPERATOR(enum_name, op)                             \
+  constexpr auto operator op(enum_name lhs, enum_name rhs)->enum_name { \
+    return static_cast<enum_name>(                                      \
+        static_cast<std::underlying_type_t<enum_name>>(lhs)             \
+            op static_cast<std::underlying_type_t<enum_name>>(rhs));    \
+  }
+
+#define ENUM_FLAGS(enum_name)        \
+  DEFINE_ENUM_OPERATOR(enum_name, |) \
+  DEFINE_ENUM_OPERATOR(enum_name, &)
+
+consteval auto enum_bit(auto index) {
+  return 1 << index;
+}
 
 namespace efi {
 
@@ -146,6 +163,25 @@ enum class InterfaceType {
   Native
 };
 
+enum class MemoryType : uint32_t {
+  ReservedMemoryType,
+  LoaderCode,
+  LoaderData,
+  SimpleTextInputProtocolCode,
+  SimpleTextInputProtocolData,
+  RuntimeServicesCode,
+  RuntimeServicesData,
+  ConventionalMemory,
+  UnusableMemory,
+  ACPIReclaimMemory,
+  ACPIMemoryNVS,
+  MemoryMappedIO,
+  MemoryMappedIOPortSpace,
+  PalCode,
+  PersistentMemory,
+  UnacceptedMemoryType
+};
+
 class Guid {
  public:
   using Bytes      = std::array<uint8_t, 16>;
@@ -175,11 +211,11 @@ class Guid {
                 .data3 = data3,
                 .data4{.bytes = data4}} {}
 
-  nodiscard constexpr auto& bytes() const noexcept {
+  NODISCARD constexpr auto& bytes() const noexcept {
     return bytes_;
   }
 
-  nodiscard constexpr auto operator==(const Guid& guid) const -> bool {
+  NODISCARD constexpr auto operator==(const Guid& guid) const -> bool {
     return bytes_ == guid.bytes_;
   }
 };
@@ -225,15 +261,15 @@ class Table {
   auto operator=(Table&&) -> Table&      = delete;
   auto operator=(const Table&) -> Table& = delete;
 
-  nodiscard auto signature() const noexcept {
+  NODISCARD auto signature() const noexcept {
     return signature_;
   }
 
-  nodiscard auto revision() const noexcept {
+  NODISCARD auto revision() const noexcept {
     return revision_;
   }
 
-  nodiscard auto crc32() const noexcept {
+  NODISCARD auto crc32() const noexcept {
     return crc32_;
   }
 };

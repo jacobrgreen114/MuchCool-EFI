@@ -49,21 +49,21 @@ class DebugPortProtocol final {
   auto operator=(DebugPortProtocol&&) -> DebugPortProtocol&      = delete;
   auto operator=(const DebugPortProtocol&) -> DebugPortProtocol& = delete;
 
-  force_inline auto reset() noexcept {
+  FORCE_INLINE auto reset() noexcept {
     return reset_(this);
   }
 
-  force_inline auto write(uintn_t* buffer_size, const void* buffer,
+  FORCE_INLINE auto write(uintn_t* buffer_size, const void* buffer,
                           uint32_t timeout = 0) noexcept {
     return write_(this, timeout, buffer_size, buffer);
   }
 
-  force_inline auto read(uintn_t* buffer_size, void* buffer,
+  FORCE_INLINE auto read(uintn_t* buffer_size, void* buffer,
                          uint32_t timeout = 0) noexcept {
     return read_(this, timeout, buffer_size, buffer);
   }
 
-  nodiscard force_inline auto poll() const noexcept {
+  NODISCARD FORCE_INLINE auto poll() const noexcept {
     return poll_(this);
   }
 

@@ -41,7 +41,7 @@ class SimpleFileSystemProtocol final {
   auto operator=(const SimpleFileSystemProtocol&)
       -> SimpleFileSystemProtocol& = delete;
 
-  force_inline auto open_volume(FileProtocol** root) noexcept {
+  FORCE_INLINE auto open_volume(FileProtocol** root) noexcept {
     return open_volume_(this, root);
   }
 

@@ -32,11 +32,11 @@ class ConfigurationTable final {
   void* vendor_table;
 
  public:
-  nodiscard auto& guid() const noexcept {
+  NODISCARD auto& guid() const noexcept {
     return vendor_guid_;
   }
 
-  nodiscard auto* table() const noexcept {
+  NODISCARD auto* table() const noexcept {
     return vendor_table;
   }
 };
@@ -66,27 +66,27 @@ class SystemTable final : public Table {
   auto operator=(SystemTable&&) -> SystemTable&      = delete;
   auto operator=(const SystemTable&) -> SystemTable& = delete;
 
-  nodiscard auto* firmware_vendor() const noexcept {
+  NODISCARD auto* firmware_vendor() const noexcept {
     return firmware_vendor_;
   }
 
-  nodiscard auto* con_out() const noexcept {
+  NODISCARD auto* con_out() const noexcept {
     return con_out_;
   }
 
-  nodiscard auto* con_in() const noexcept {
+  NODISCARD auto* con_in() const noexcept {
     return con_in_;
   }
 
-  nodiscard auto* std_err() const noexcept {
+  NODISCARD auto* std_err() const noexcept {
     return std_err_;
   }
 
-  nodiscard auto* runtime_services() const noexcept {
+  NODISCARD auto* runtime_services() const noexcept {
     return runtime_services_;
   }
 
-  nodiscard auto* boot_services() const noexcept {
+  NODISCARD auto* boot_services() const noexcept {
     return boot_services_;
   }
 

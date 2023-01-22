@@ -99,16 +99,16 @@ class GraphicsOutputProtocol final {
   auto operator=(const GraphicsOutputProtocol&)
       -> GraphicsOutputProtocol& = delete;
 
-  force_inline auto query_mode(uint32_t mode_number, uintn_t* size_of_info,
+  FORCE_INLINE auto query_mode(uint32_t mode_number, uintn_t* size_of_info,
                                GraphicsOutputModeInformation** info) noexcept {
     return query_mode_(this, mode_number, size_of_info, info);
   }
 
-  force_inline auto set_mode(uint32_t mode) noexcept {
+  FORCE_INLINE auto set_mode(uint32_t mode) noexcept {
     return set_mode_(this, mode);
   }
 
-  force_inline auto blt(BltPixel* blt_buffer, BltOperation blt_op,
+  FORCE_INLINE auto blt(BltPixel* blt_buffer, BltOperation blt_op,
                         uintn_t source_x, uintn_t source_y, uintn_t dest_x,
                         uintn_t dest_y, uintn_t width, uintn_t height,
                         uintn_t delta) noexcept {
@@ -116,7 +116,7 @@ class GraphicsOutputProtocol final {
                 width, height, delta);
   }
 
-  nodiscard auto mode() const noexcept -> auto& {
+  NODISCARD auto mode() const noexcept -> auto& {
     return *mode_;
   }
 

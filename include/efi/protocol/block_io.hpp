@@ -65,30 +65,30 @@ class BlockIOProtocol final {
   auto operator=(BlockIOProtocol&&) -> BlockIOProtocol&      = delete;
   auto operator=(const BlockIOProtocol&) -> BlockIOProtocol& = delete;
 
-  nodiscard force_inline auto revision() const noexcept {
+  NODISCARD FORCE_INLINE auto revision() const noexcept {
     return revision_;
   }
 
-  nodiscard force_inline auto& media() const noexcept {
+  NODISCARD FORCE_INLINE auto& media() const noexcept {
     return *media_;
   }
 
-  force_inline auto reset(bool extended_verification) noexcept {
+  FORCE_INLINE auto reset(bool extended_verification) noexcept {
     return reset_(this, extended_verification);
   }
 
-  force_inline auto read_blocks(uint32_t media_id, LBA lba, uintn_t buffer_size,
+  FORCE_INLINE auto read_blocks(uint32_t media_id, LBA lba, uintn_t buffer_size,
                                 void* buffer) noexcept {
     return read_blocks_(this, media_id, lba, buffer_size, buffer);
   }
 
-  force_inline auto write_blocks(uint32_t media_id, LBA lba,
+  FORCE_INLINE auto write_blocks(uint32_t media_id, LBA lba,
                                  uintn_t buffer_size,
                                  const void* buffer) noexcept {
     return write_blocks_(this, media_id, lba, buffer_size, buffer);
   }
 
-  force_inline auto flush_blocks() noexcept {
+  FORCE_INLINE auto flush_blocks() noexcept {
     return flush_blocks_(this);
   }
 
@@ -134,7 +134,7 @@ class EraseBlockProtocol final {
   auto operator=(EraseBlockProtocol&&) -> EraseBlockProtocol&      = delete;
   auto operator=(const EraseBlockProtocol&) -> EraseBlockProtocol& = delete;
 
-  force_inline auto erase_blocks(uint32_t media_id, LBA lba,
+  FORCE_INLINE auto erase_blocks(uint32_t media_id, LBA lba,
                                  EraseBlockToken* token,
                                  uintn_t size) noexcept {
     return erase_blocks_(this, media_id, lba, token, size);

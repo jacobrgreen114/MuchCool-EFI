@@ -97,30 +97,30 @@ class SimpleTextInputExProtocol final {
   auto operator=(const SimpleTextInputExProtocol&)
       -> SimpleTextInputExProtocol& = delete;
 
-  force_inline auto reset(bool extended_verificatin = false) noexcept {
+  FORCE_INLINE auto reset(bool extended_verificatin = false) noexcept {
     return reset_(this, extended_verificatin);
   }
 
-  force_inline auto read_keystroke(KeyData* data) noexcept {
+  FORCE_INLINE auto read_keystroke(KeyData* data) noexcept {
     return read_keystroke_(this, data);
   }
 
-  nodiscard auto event() const noexcept {
+  NODISCARD auto event() const noexcept {
     return wait_for_key_;
   }
 
-  force_inline auto set_state(const KeyToggleState& key_toggle_state) noexcept {
+  FORCE_INLINE auto set_state(const KeyToggleState& key_toggle_state) noexcept {
     return set_state_(this, key_toggle_state);
   }
 
-  force_inline auto register_key_notify(const KeyData& key_data,
+  FORCE_INLINE auto register_key_notify(const KeyData& key_data,
                                         KeyNotifyFunction key_notify_function,
                                         NotifyHandle* notify_handle) noexcept {
     return register_key_notify_(this, key_data, key_notify_function,
                                 notify_handle);
   }
 
-  force_inline auto unregister_key_notify(
+  FORCE_INLINE auto unregister_key_notify(
       NotifyHandle notification_handle) noexcept {
     return unregister_key_notify_(this, notification_handle);
   }

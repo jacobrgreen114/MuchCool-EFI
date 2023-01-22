@@ -40,7 +40,7 @@ class LoadFileProtocol {
   auto operator=(LoadFileProtocol&&) -> LoadFileProtocol&      = delete;
   auto operator=(const LoadFileProtocol&) -> LoadFileProtocol& = delete;
 
-  force_inline auto load_file(const DevicePathProtocol& file_path,
+  FORCE_INLINE auto load_file(const DevicePathProtocol& file_path,
                               uintn_t* buffer_size, void* buffer,
                               bool boot_policy = true) noexcept {
     return load_file_(this, file_path, boot_policy, buffer_size, buffer);
@@ -70,7 +70,7 @@ class LoadFile2Protocol {
   auto operator=(LoadFile2Protocol&&) -> LoadFile2Protocol&      = delete;
   auto operator=(const LoadFile2Protocol&) -> LoadFile2Protocol& = delete;
 
-  force_inline auto load_file(const DevicePathProtocol& file_path,
+  FORCE_INLINE auto load_file(const DevicePathProtocol& file_path,
                               uintn_t* buffer_size, void* buffer) noexcept {
     return load_file_(this, file_path, false, buffer_size, buffer);
   }

@@ -63,19 +63,19 @@ class SimplePointerProtocol final {
   auto operator=(const SimplePointerProtocol&)
       -> SimplePointerProtocol& = delete;
 
-  force_inline auto reset(bool extended_verification = false) noexcept {
+  FORCE_INLINE auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  force_inline auto get_state(SimplePointerState* out_state) noexcept {
+  FORCE_INLINE auto get_state(SimplePointerState* out_state) noexcept {
     return get_state_(this, out_state);
   }
 
-  nodiscard auto event() const noexcept {
+  NODISCARD auto event() const noexcept {
     return wait_for_input_;
   }
 
-  nodiscard auto mode() const -> auto& {
+  NODISCARD auto mode() const -> auto& {
     return *mode_;
   }
 
@@ -135,11 +135,11 @@ class AbsolutePointerProtocol final {
     return get_state_(this, out_state);
   }
 
-  nodiscard auto event() const noexcept {
+  NODISCARD auto event() const noexcept {
     return wait_for_input_;
   }
 
-  nodiscard auto mode() const noexcept -> auto& {
+  NODISCARD auto mode() const noexcept -> auto& {
     return *mode_;
   }
 

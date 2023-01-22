@@ -90,15 +90,15 @@ class SimpleTextInputProtocol final {
   auto operator=(const SimpleTextInputProtocol&)
       -> SimpleTextInputProtocol& = delete;
 
-  force_inline auto reset(bool extended_verification = false) noexcept {
+  FORCE_INLINE auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  force_inline auto read_key_stroke(InputKey* out_key) noexcept {
+  FORCE_INLINE auto read_key_stroke(InputKey* out_key) noexcept {
     return read_key_stroke_(this, out_key);
   }
 
-  force_inline auto wait_event() noexcept {
+  FORCE_INLINE auto wait_event() noexcept {
     return wait_for_key_;
   }
 
@@ -161,40 +161,40 @@ class SimpleTextOutputProtocol final {
   auto operator=(const SimpleTextOutputProtocol&)
       -> SimpleTextOutputProtocol& = delete;
 
-  force_inline auto reset(bool extended_verification = false) noexcept {
+  FORCE_INLINE auto reset(bool extended_verification = false) noexcept {
     return reset_(this, extended_verification);
   }
 
-  force_inline auto output_string(const char16_t* str) noexcept {
+  FORCE_INLINE auto output_string(const char16_t* str) noexcept {
     return output_string_(this, str);
   }
 
-  force_inline auto test_string(const char16_t* str) noexcept {
+  FORCE_INLINE auto test_string(const char16_t* str) noexcept {
     return test_string_(this, str);
   }
 
-  force_inline auto query_mode(uintn_t mode, uintn_t* out_columns,
+  FORCE_INLINE auto query_mode(uintn_t mode, uintn_t* out_columns,
                                uintn_t* out_rows) noexcept {
     return query_mode_(this, mode, out_columns, out_rows);
   }
 
-  force_inline auto set_mode(uintn_t mode) noexcept {
+  FORCE_INLINE auto set_mode(uintn_t mode) noexcept {
     return set_mode_(this, mode);
   }
 
-  force_inline auto set_attribute(TextAttribute attribute) noexcept {
+  FORCE_INLINE auto set_attribute(TextAttribute attribute) noexcept {
     return set_attribute_(this, attribute);
   }
 
-  force_inline auto clear_screen() noexcept {
+  FORCE_INLINE auto clear_screen() noexcept {
     return clear_screen_(this);
   }
 
-  force_inline auto set_cursor_position(uintn_t column, uintn_t row) noexcept {
+  FORCE_INLINE auto set_cursor_position(uintn_t column, uintn_t row) noexcept {
     return set_cursor_position_(this, column, row);
   }
 
-  force_inline auto enable_cursor(bool visible) noexcept {
+  FORCE_INLINE auto enable_cursor(bool visible) noexcept {
     return enable_cursor_(this, visible);
   }
 

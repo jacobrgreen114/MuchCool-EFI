@@ -48,14 +48,13 @@ class DiskIOProtocol final {
   auto operator=(DiskIOProtocol&&) -> DiskIOProtocol&      = delete;
   auto operator=(const DiskIOProtocol&) -> DiskIOProtocol& = delete;
 
-  force_inline auto read_disk(uint32_t media_id,
-                              uint64_t offset, uintn_t buffer_size,
-                              void* buffer) noexcept {
+  FORCE_INLINE auto read_disk(uint32_t media_id, uint64_t offset,
+                              uintn_t buffer_size, void* buffer) noexcept {
     return read_disk_(this, media_id, offset, buffer_size, buffer);
   }
 
-  force_inline auto write_disk(uint32_t media_id,
-                               uint64_t offset, uintn_t buffer_size,
+  FORCE_INLINE auto write_disk(uint32_t media_id, uint64_t offset,
+                               uintn_t buffer_size,
                                const void* buffer) noexcept {
     return write_disk_(this, media_id, offset, buffer_size, buffer);
   }

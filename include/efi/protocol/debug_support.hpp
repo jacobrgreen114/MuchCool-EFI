@@ -86,29 +86,29 @@ class DebugSupportProtocol final {
   auto operator=(const DebugSupportProtocol &)
       -> DebugSupportProtocol & = delete;
 
-  nodiscard auto architecture() const {
+  NODISCARD auto architecture() const {
     return isa_;
   }
 
-  force_inline auto get_max_processor_index(
+  FORCE_INLINE auto get_max_processor_index(
       uintn_t *max_processor_index) noexcept {
     return get_maximum_processor_index_(this, max_processor_index);
   }
 
-  force_inline auto register_periodic_callback(
+  FORCE_INLINE auto register_periodic_callback(
       uintn_t processor_index, PeriodicCallback periodic_callback) noexcept {
     return register_periodic_callback_(this, processor_index,
                                        periodic_callback);
   }
 
-  force_inline auto register_exception_callback(
+  FORCE_INLINE auto register_exception_callback(
       uintn_t processor_index, ExceptionCallback exception_callback,
       ExceptionType exception_type) noexcept {
     return register_exception_callback_(this, processor_index,
                                         exception_callback, exception_type);
   }
 
-  force_inline auto invalidate_instruction_cache(uintn_t processor_index,
+  FORCE_INLINE auto invalidate_instruction_cache(uintn_t processor_index,
                                                  void *start,
                                                  uint64_t length) noexcept {
     return invalidate_instruction_cache_(this, processor_index, start, length);

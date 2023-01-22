@@ -139,42 +139,42 @@ class FileProtocol {
   auto operator=(FileProtocol&&) -> FileProtocol&      = delete;
   auto operator=(const FileProtocol&) -> FileProtocol& = delete;
 
-  force_inline auto open(FileProtocol** new_handle, const char16_t* file_name,
+  FORCE_INLINE auto open(FileProtocol** new_handle, const char16_t* file_name,
                          FileOpenMode open_mode,
                          FileAttribute attributes) noexcept {
     return open_(this, new_handle, file_name, open_mode, attributes);
   }
 
-  force_inline auto close() noexcept {
+  FORCE_INLINE auto close() noexcept {
     return close_(this);
   }
 
-  force_inline auto delete_file() noexcept {
+  FORCE_INLINE auto delete_file() noexcept {
     return delete_(this);
   }
 
-  force_inline auto read(uintn_t* buffer_size, void* buffer) noexcept {
+  FORCE_INLINE auto read(uintn_t* buffer_size, void* buffer) noexcept {
     return read_(this, buffer_size, buffer);
   }
 
-  force_inline auto write(uintn_t* buffer_size, const void* buffer) noexcept {
+  FORCE_INLINE auto write(uintn_t* buffer_size, const void* buffer) noexcept {
     return write_(this, buffer_size, buffer);
   }
 
-  force_inline auto set_position(uint64_t position) noexcept {
+  FORCE_INLINE auto set_position(uint64_t position) noexcept {
     return set_position_(this, position);
   }
 
-  force_inline auto get_position(uint64_t* position) noexcept {
+  FORCE_INLINE auto get_position(uint64_t* position) noexcept {
     return get_position_(this, position);
   }
 
-  force_inline auto get_info(const Guid& information_type, uintn_t* buffer_size,
+  FORCE_INLINE auto get_info(const Guid& information_type, uintn_t* buffer_size,
                              void* buffer) noexcept {
     return get_info_(this, information_type, buffer_size, buffer);
   }
 
-  force_inline auto set_info(const Guid& information_type, uintn_t buffer_size,
+  FORCE_INLINE auto set_info(const Guid& information_type, uintn_t buffer_size,
                              const void* buffer) noexcept {
     return set_info_(this, information_type, buffer_size, buffer);
   }

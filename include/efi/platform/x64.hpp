@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // MuchCool-EFI. If not, see <https://www.gnu.org/licenses/>.
-//
 
 #include <cstdint>
 
@@ -49,7 +48,7 @@ class SystemContext {
   uint64_t ExceptionData;  // ExceptionData is
                            // additional data pushed
                            // on the stack by some
-                           // types of x64 64-bit
+                           // types of x64 64-enum_bit
                            // mode exceptions
   FXSaveStateX64 FxSaveState;
   uint64_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;

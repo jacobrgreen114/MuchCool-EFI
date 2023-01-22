@@ -22,18 +22,31 @@
 #include "system_table.hpp"
 
 #ifdef EFI_INCLUDE_ALL_HEADERS
+// Console Protocols
+#include "efi/protocol/simple_text_ex.hpp"
 #include "efi/protocol/pointer.hpp"
 #include "efi/protocol/serial.hpp"
 #include "efi/protocol/graphics_output.hpp"
 #include "efi/protocol/edid.hpp"
-#include "efi/protocol/simple_text_ex.hpp"
+
+// File IO Protocols
 #include "efi/protocol/load_file.hpp"
 #include "efi/protocol/file_system.hpp"
 #include "efi/protocol/file.hpp"
 #include "efi/protocol/disk_io.hpp"
 #include "efi/protocol/block_io.hpp"
+
+// Debug Protocols
 #include "efi/protocol/debug_support.hpp"
 #include "efi/protocol/debug_port.hpp"
-#include "efi/protocol/arp.hpp"
-#include "efi/protocol/dhcp.hpp"
+
+// Network Protocols
+#include "net_core.hpp"
+#include "protocol/nic.hpp"
+#include "protocol/simple_network.hpp"
+#include "protocol/managed_network.hpp"
+#include "protocol/arp.hpp"
+#include "protocol/dhcp.hpp"
+#include "protocol/dns_v4.hpp"
+#include "protocol/tcp_v4.hpp"
 #endif

@@ -19,7 +19,7 @@
 #error
 #endif
 
-#include "efi/core.hpp"
+#include "../net_core.hpp"
 
 namespace efi {
 
@@ -50,61 +50,6 @@ enum class Dhcp4Event {
   Fail           = 0x0c
 };
 
-class MacAddress final {
- private:
-  union {
-    std::array<uint8_t, 32> bytes_;
-  };
-
- public:
-  consteval explicit MacAddress(const std::array<uint8_t, 32> &bytes)
-      : bytes_{bytes} {}
-
-  consteval auto operator==(const MacAddress &mac) const noexcept -> bool {
-    return bytes_ == mac.bytes_;
-  }
-};
-
-class IPv4Address final {
- private:
-  union {
-    std::array<uint8_t, 4> bytes_;
-    struct {
-      uint8_t data1;
-      uint8_t data2;
-      uint8_t data3;
-      uint8_t data4;
-    } s_;
-  };
-
- public:
-  constexpr explicit IPv4Address(const std::array<uint8_t, 4> &bytes)
-      : bytes_{bytes} {}
-
-  constexpr IPv4Address(uint8_t data1, uint8_t data2, uint8_t data3,
-                        uint8_t data4)
-      : s_{.data1 = data1, .data2 = data2, .data3 = data3, .data4 = data4} {}
-
-  constexpr auto operator==(const IPv4Address &address) const noexcept -> bool {
-    return bytes_ == address.bytes_;
-  }
-};
-
-class IPv6Address final {
- private:
-  union {
-    std::array<uint8_t, 16> bytes_;
-  };
-
- public:
-  constexpr explicit IPv6Address(const std::array<uint8_t, 16> &bytes)
-      : bytes_{bytes} {}
-
-  constexpr auto operator==(const IPv6Address &address) const noexcept -> bool {
-    return bytes_ == address.bytes_;
-  }
-};
-
 class DHCP4Protocol;
 
 #pragma pack(1)
@@ -124,10 +69,10 @@ class Dhcp4Header final {
   uint32_t xid_;
   uint16_t seconds;
   uint16_t reserved_;
-  IPv4Address client_addr_;
-  IPv4Address your_addr_;
-  IPv4Address server_addr_;
-  IPv4Address gateway_addr_;
+  Ipv4Address client_addr_;
+  Ipv4Address your_addr_;
+  Ipv4Address server_addr_;
+  Ipv4Address gateway_addr_;
   uint8_t client_hw_addr_[16];
   char8_t server_name[64];
   char8_t boot_file_name[128];
@@ -155,17 +100,17 @@ using Dhcp4Callback = Status(EFI_CALL *)(DHCP4Protocol *self, void *context,
                                          Dhcp4Packet **NewPacket);
 
 class Dhcp4ListenPoint final {
-  IPv4Address listen_address_;
-  IPv4Address subnet_mask_;
+  Ipv4Address listen_address_;
+  Ipv4Address subnet_mask_;
   uint16_t listen_port_;
 };
 
 class Dhcp4TransmitReceiveToken final {
   Status status_;
   Event completion_event_;
-  IPv4Address remote_address_;
+  Ipv4Address remote_address_;
   uint16_t remote_port_;
-  IPv4Address gateway_address_;
+  Ipv4Address gateway_address_;
   uint32_t listen_point_count_;
   Dhcp4ListenPoint *listen_points_;
   uint32_t timeout_value_;
@@ -179,7 +124,7 @@ class Dhcp4ConfigData {
   uint32_t *discover_timeout_;
   uint32_t request_try_count_;
   uint32_t *request_timeout_;
-  IPv4Address client_address_;
+  Ipv4Address client_address_;
   Dhcp4Callback dhcp4_callback_;
   void *callback_context_;
   uint32_t option_count_;
@@ -189,11 +134,11 @@ class Dhcp4ConfigData {
 class Dhcp4ModeData final {
   Dhcp4State state_;
   Dhcp4ConfigData config_data_;
-  IPv4Address client_address_;
+  Ipv4Address client_address_;
   MacAddress client_mac_address_;
-  IPv4Address server_address_;
-  IPv4Address router_address_;
-  IPv4Address subnet_mask_;
+  Ipv4Address server_address_;
+  Ipv4Address router_address_;
+  Ipv4Address subnet_mask_;
   uint32_t lease_time_;
   Dhcp4Packet *reply_packet_;
 };
@@ -250,36 +195,36 @@ class DHCP4Protocol final {
   auto operator=(DHCP4Protocol &&) -> DHCP4Protocol      & = delete;
   auto operator=(const DHCP4Protocol &) -> DHCP4Protocol & = delete;
 
-  force_inline auto get_mode_data(Dhcp4ModeData *dhcp4_mode_data) noexcept {
+  FORCE_INLINE auto get_mode_data(Dhcp4ModeData *dhcp4_mode_data) noexcept {
     return get_mode_data_(this, dhcp4_mode_data);
   }
 
-  force_inline auto configure(const Dhcp4ModeData &data) noexcept {
+  FORCE_INLINE auto configure(const Dhcp4ModeData &data) noexcept {
     return configure_(this, &data);
   }
 
-  force_inline auto reset() noexcept {
+  FORCE_INLINE auto reset() noexcept {
     return configure_(this, nullptr);
   }
 
-  force_inline auto start(Event completion_event) noexcept {
+  FORCE_INLINE auto start(Event completion_event) noexcept {
     return start_(this, completion_event);
   }
 
-  force_inline auto renew_rebind(bool rebid_request,
+  FORCE_INLINE auto renew_rebind(bool rebid_request,
                                  Event completion_event) noexcept {
     return renew_rebind_(this, rebid_request, completion_event);
   }
 
-  force_inline auto release() noexcept {
+  FORCE_INLINE auto release() noexcept {
     return release_(this);
   }
 
-  force_inline auto stop() noexcept {
+  FORCE_INLINE auto stop() noexcept {
     return stop_(this);
   }
 
-  force_inline auto build(const Dhcp4Packet &seed_packet, uint32_t delete_count,
+  FORCE_INLINE auto build(const Dhcp4Packet &seed_packet, uint32_t delete_count,
                           const uint8_t *delete_list, uint32_t append_count,
                           const Dhcp4PacketOption *append_list[],
                           Dhcp4Packet **new_packet) noexcept {
@@ -287,12 +232,12 @@ class DHCP4Protocol final {
                   append_list, new_packet);
   }
 
-  force_inline auto transmit_recieve(
+  FORCE_INLINE auto transmit_recieve(
       const Dhcp4TransmitReceiveToken &token) noexcept {
     return transmit_recieve_(this, token);
   }
 
-  force_inline auto parse(Dhcp4Packet *packet, uint32_t *option_count,
+  FORCE_INLINE auto parse(Dhcp4Packet *packet, uint32_t *option_count,
                           Dhcp4PacketOption *packet_option_list[]) noexcept {
     return parse_(this, packet, option_count, packet_option_list);
   }

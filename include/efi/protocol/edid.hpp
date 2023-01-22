@@ -37,10 +37,10 @@ class EdidDiscoveredProtocol final {
   auto operator=(const EdidDiscoveredProtocol&)
       -> EdidDiscoveredProtocol& = delete;
 
-  nodiscard auto size() const {
+  NODISCARD auto size() const {
     return size_of_edid_;
   }
-  nodiscard auto edid() const {
+  NODISCARD auto edid() const {
     return edid_;
   }
 
@@ -64,10 +64,10 @@ class EdidActiveProtocol final {
   auto operator=(EdidActiveProtocol&&) -> EdidActiveProtocol&      = delete;
   auto operator=(const EdidActiveProtocol&) -> EdidActiveProtocol& = delete;
 
-  nodiscard auto size() const {
+  NODISCARD auto size() const {
     return size_of_edid_;
   }
-  nodiscard auto edid() const {
+  NODISCARD auto edid() const {
     return edid_;
   }
 
@@ -95,7 +95,7 @@ class EdidOverrideProtocol final {
   auto operator=(EdidOverrideProtocol&&) -> EdidOverrideProtocol&      = delete;
   auto operator=(const EdidOverrideProtocol&) -> EdidOverrideProtocol& = delete;
 
-  force_inline auto get_edid(const Handle* child_handle, uint32_t* attributes,
+  FORCE_INLINE auto get_edid(const Handle* child_handle, uint32_t* attributes,
                              uintn_t* edid_size, uint8_t** edid) noexcept {
     return get_edid_(this, child_handle, attributes, edid_size, edid);
   }

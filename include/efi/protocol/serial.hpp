@@ -34,7 +34,7 @@ enum class ParityType : uint32_t {
 
 enum class StopBits : uint32_t {
   Default,
-  One,      // 1 stop bit
+  One,      // 1 stop enum_bit
   OneFive,  // 1.5 stop bits
   Two       // 2 stop bits
 };
@@ -105,11 +105,11 @@ class SerialIOProtocol final {
   auto operator=(SerialIOProtocol&&) -> SerialIOProtocol&      = delete;
   auto operator=(const SerialIOProtocol&) -> SerialIOProtocol& = delete;
 
-  force_inline auto reset() noexcept {
+  FORCE_INLINE auto reset() noexcept {
     return reset_(this);
   }
 
-  force_inline auto set_attribute(uint64_t baud_rate,
+  FORCE_INLINE auto set_attribute(uint64_t baud_rate,
                                   uint32_t recieve_fifo_depth, uint32_t timeout,
                                   ParityType parity_type, uint8_t databits,
                                   StopBits stopbits) noexcept {
@@ -117,27 +117,27 @@ class SerialIOProtocol final {
                           parity_type, databits, stopbits);
   }
 
-  force_inline auto set_control(ControlBits control) noexcept {
+  FORCE_INLINE auto set_control(ControlBits control) noexcept {
     return set_control_(this, control);
   }
 
-  force_inline auto get_control(ControlBits* out_control) noexcept {
+  FORCE_INLINE auto get_control(ControlBits* out_control) noexcept {
     return get_control_(this, out_control);
   }
 
-  force_inline auto write(uintn_t* buffer_size, const void* buffer) noexcept {
+  FORCE_INLINE auto write(uintn_t* buffer_size, const void* buffer) noexcept {
     return write_(this, buffer_size, buffer);
   }
 
-  force_inline auto read(uintn_t* buffer_size, void* buffer) noexcept {
+  FORCE_INLINE auto read(uintn_t* buffer_size, void* buffer) noexcept {
     return read_(this, buffer_size, buffer);
   }
 
-  nodiscard auto mode() const noexcept -> auto& {
+  NODISCARD auto mode() const noexcept -> auto& {
     return *mode_;
   }
 
-  nodiscard auto device_type() const noexcept -> auto& {
+  NODISCARD auto device_type() const noexcept -> auto& {
     return *device_type_guid_;
   }
 
