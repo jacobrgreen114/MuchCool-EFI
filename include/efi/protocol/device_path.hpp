@@ -110,15 +110,15 @@ class DevicePathProtocol {
   uint16_t length_;
 
  public:
-  GETTER auto type() const noexcept {
+  NODISCARD auto type() const noexcept {
     return type_;
   }
 
-  GETTER auto subtype() const noexcept {
+  NODISCARD auto subtype() const noexcept {
     return subtype_;
   }
 
-  GETTER auto length() const noexcept {
+  NODISCARD auto length() const noexcept {
     return length_;
   }
 
@@ -134,11 +134,11 @@ class PciDevicePath final : public DevicePathProtocol {
   uint8_t device_;
 
  public:
-  GETTER auto function() const noexcept {
+  NODISCARD auto function() const noexcept {
     return function_;
   }
 
-  GETTER auto device() const noexcept {
+  NODISCARD auto device() const noexcept {
     return device_;
   }
 };
@@ -147,7 +147,7 @@ class PcCardDevicePath final : public DevicePathProtocol {
   uint8_t function_;
 
  public:
-  GETTER auto function() const noexcept {
+  NODISCARD auto function() const noexcept {
     return function_;
   }
 };
@@ -158,15 +158,15 @@ class MemoryMappedDevicePath final : public DevicePathProtocol {
   void* end_addr_;
 
  public:
-  GETTER auto memory_type() const noexcept {
+  NODISCARD auto memory_type() const noexcept {
     return memory_type_;
   }
 
-  GETTER auto start_addr() const noexcept {
+  NODISCARD auto start_addr() const noexcept {
     return start_addr_;
   }
 
-  GETTER auto end_addr() const noexcept {
+  NODISCARD auto end_addr() const noexcept {
     return end_addr_;
   }
 };
@@ -175,19 +175,19 @@ class VendorDevicePath : public DevicePathProtocol {
   ::efi::Guid vendor_guid_;
 
  public:
-  GETTER auto& vendor_guid() const noexcept {
+  NODISCARD auto& vendor_guid() const noexcept {
     return vendor_guid_;
   }
 
-  GETTER auto* data() noexcept {
+  NODISCARD auto* data() noexcept {
     return static_cast<void*>(&this[1]);
   }
 
-  GETTER auto* data() const noexcept {
+  NODISCARD auto* data() const noexcept {
     return static_cast<const void*>(&this[1]);
   }
 
-  GETTER auto data_length() const noexcept {
+  NODISCARD auto data_length() const noexcept {
     return length() - sizeof(VendorDevicePath);
   }
 };
@@ -196,7 +196,7 @@ class ControllerDevicePath final : public DevicePathProtocol {
   uint32_t controller_number_;
 
  public:
-  GETTER auto controller_number() const noexcept {
+  NODISCARD auto controller_number() const noexcept {
     return controller_number_;
   }
 };
@@ -217,11 +217,11 @@ class BaseboardManagementControllerDevicePath final
   void* base_addr_;
 
  public:
-  GETTER auto interface_type() const noexcept {
+  NODISCARD auto interface_type() const noexcept {
     return interface_type_;
   }
 
-  GETTER auto base_addr() const noexcept {
+  NODISCARD auto base_addr() const noexcept {
     return base_addr_;
   }
 };
@@ -231,11 +231,11 @@ class AcpiDevicePath : public DevicePathProtocol {
   uint32_t uid_;
 
  public:
-  GETTER auto hid() const noexcept {
+  NODISCARD auto hid() const noexcept {
     return hid_;
   }
 
-  GETTER auto uid() const noexcept {
+  NODISCARD auto uid() const noexcept {
     return uid_;
   }
 };
@@ -246,7 +246,7 @@ class ExpandedAcpiDevicePath : public AcpiDevicePath {
   // todo : figure out best way to implement string variable. possible template
   // char8_t hid_uid_cid_str[];
  public:
-  GETTER auto cid() const noexcept {
+  NODISCARD auto cid() const noexcept {
     return cid_;
   }
 };
@@ -257,7 +257,7 @@ class AcpiAdrDevicePath : public DevicePathProtocol {
   uint32_t additional_adr_[];
 
  public:
-  GETTER auto adr() const noexcept {
+  NODISCARD auto adr() const noexcept {
     return adr_;
   }
 };
@@ -266,7 +266,7 @@ class NVDIMMDevicePath final : public DevicePathProtocol {
   uint32_t device_handle_;
 
  public:
-  GETTER auto handle() const noexcept {
+  NODISCARD auto handle() const noexcept {
     return device_handle_;
   }
 };
@@ -277,15 +277,15 @@ class AtapiDevicePath final : public DevicePathProtocol {
   uint16_t logical_unit_number_;
 
  public:
-  GETTER auto primary() const noexcept {
+  NODISCARD auto primary() const noexcept {
     return !secondary_;
   }
 
-  GETTER auto master() const noexcept {
+  NODISCARD auto master() const noexcept {
     return !slave_;
   }
 
-  GETTER auto logical_unit_number() const noexcept {
+  NODISCARD auto logical_unit_number() const noexcept {
     return logical_unit_number_;
   }
 };
@@ -295,11 +295,11 @@ class ScsiDevicePath final : public DevicePathProtocol {
   uint16_t logical_unit_number_;
 
  public:
-  GETTER auto target_id() const noexcept {
+  NODISCARD auto target_id() const noexcept {
     return target_id_;
   }
 
-  GETTER auto logical_unit_number() const noexcept {
+  NODISCARD auto logical_unit_number() const noexcept {
     return logical_unit_number_;
   }
 };
@@ -310,11 +310,11 @@ class FibreChannelDevicePath final : public DevicePathProtocol {
   uint64_t logical_unit_number_;
 
  public:
-  GETTER auto world_wide_name() const noexcept {
+  NODISCARD auto world_wide_name() const noexcept {
     return world_wide_name_;
   }
 
-  GETTER auto logical_unit_number() const noexcept {
+  NODISCARD auto logical_unit_number() const noexcept {
     return logical_unit_number_;
   }
 };
@@ -330,11 +330,11 @@ class FibreChannelExDevicePath final : public DevicePathProtocol {
   LogicalUnitNumber logical_unit_number_;
 
  public:
-  GETTER auto world_wide_name() const noexcept {
+  NODISCARD auto world_wide_name() const noexcept {
     return world_wide_name_;
   }
 
-  GETTER auto logical_unit_number() const noexcept {
+  NODISCARD auto logical_unit_number() const noexcept {
     return logical_unit_number_;
   }
 };
@@ -344,7 +344,7 @@ class FirewireDevicePath final : public DevicePathProtocol {
   uint64_t guid_;
 
  public:
-  GETTER auto guid() const noexcept {
+  NODISCARD auto guid() const noexcept {
     return guid_;
   }
 };
@@ -354,11 +354,11 @@ class UsbDevicePath final : public DevicePathProtocol {
   uint8_t interface_;
 
  public:
-  GETTER auto port() const noexcept {
+  NODISCARD auto port() const noexcept {
     return parent_port_;
   }
 
-  GETTER auto interface() const noexcept {
+  NODISCARD auto interface() const noexcept {
     return interface_;
   }
 };
@@ -369,15 +369,15 @@ class SataDevicePath final : public DevicePathProtocol {
   uint16_t logical_unit_number_;
 
  public:
-  GETTER auto hba_port() const noexcept {
+  NODISCARD auto hba_port() const noexcept {
     return hba_port_;
   }
 
-  GETTER auto port_multiplier_port() const noexcept {
+  NODISCARD auto port_multiplier_port() const noexcept {
     return port_multiplier_port_;
   }
 
-  GETTER auto logical_unit_number() const noexcept {
+  NODISCARD auto logical_unit_number() const noexcept {
     return logical_unit_number_;
   }
 };

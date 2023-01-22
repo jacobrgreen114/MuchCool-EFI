@@ -90,6 +90,11 @@ class SystemTable final : public Table {
     return boot_services_;
   }
 
+  NODISCARD auto configuration_tables() const noexcept {
+    return std::span<ConfigurationTable>{configuration_table_,
+                                         num_table_entries_};
+  }
+
   auto get_configuration_table(uintn_t index,
                                ConfigurationTable** entry) const noexcept
       -> Status {

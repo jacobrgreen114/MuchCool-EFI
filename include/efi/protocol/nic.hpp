@@ -54,39 +54,39 @@ class NetworkInterfaceIdentifierProtocol final {
   auto operator=(const NetworkInterfaceIdentifierProtocol&)
       -> NetworkInterfaceIdentifierProtocol& = delete;
 
-  GETTER auto id() const noexcept {
+  NODISCARD auto id() const noexcept {
     return id_;
   }
 
-  GETTER auto image_addr() const noexcept {
+  NODISCARD auto image_addr() const noexcept {
     return image_addr_;
   }
 
-  GETTER auto image_size() const noexcept {
+  NODISCARD auto image_size() const noexcept {
     return image_size_;
   }
 
-  GETTER auto string_id() const noexcept {
+  NODISCARD auto string_id() const noexcept {
     return string_id_;
   }
 
-  GETTER auto type() const noexcept {
+  NODISCARD auto type() const noexcept {
     return type_;
   }
 
-  GETTER auto major_ver() const noexcept {
+  NODISCARD auto major_ver() const noexcept {
     return major_ver_;
   }
 
-  GETTER auto minor_ver() const noexcept {
+  NODISCARD auto minor_ver() const noexcept {
     return minor_ver_;
   }
 
-  GETTER auto supports_ipv6() const noexcept {
+  NODISCARD auto supports_ipv6() const noexcept {
     return ipv6_supported_;
   }
 
-  GETTER auto interface_num() const noexcept {
+  NODISCARD auto interface_num() const noexcept {
     return if_num_;
   }
 

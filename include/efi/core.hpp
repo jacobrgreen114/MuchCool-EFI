@@ -32,10 +32,13 @@
 #define force_inline __attribute__((always_inline))
 #endif
 
+#ifndef NODISCARD
 #define NODISCARD [[nodiscard]]
-#define NORETURN [[noreturn]]
+#endif
 
-#define GETTER NODISCARD FORCE_INLINE
+#ifndef NORETURN
+#define NORETURN [[noreturn]]
+#endif
 
 #define DEFINE_ENUM_OPERATOR(enum_name, op)                             \
   constexpr auto operator op(enum_name lhs, enum_name rhs)->enum_name { \
@@ -121,6 +124,10 @@ enum class Status : uintn_t {
   IPAddressConflict   = status_error_code_(34),
   HTTPError           = status_error_code_(35),
 };
+
+auto operator!(Status status) {
+  return status != Status::Success;
+}
 
 auto status_is_error(Status status) -> bool {
   return (static_cast<std::underlying_type_t<Status>>(status) &

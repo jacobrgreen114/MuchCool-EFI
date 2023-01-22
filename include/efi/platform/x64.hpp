@@ -18,48 +18,44 @@
 namespace efi {
 
 class FXSaveStateX64 final {
-  uint16_t Fcw;
-  uint16_t Fsw;
-  uint16_t Ftw;
-  uint16_t Opcode;
-  uint64_t Rip;
-  uint64_t DataOffset;
-  uint8_t Reserved1[8];
-  uint8_t St0Mm0[10], Reserved2[6];
-  uint8_t St1Mm1[10], Reserved3[6];
-  uint8_t St2Mm2[10], Reserved4[6];
-  uint8_t St3Mm3[10], Reserved5[6];
-  uint8_t St4Mm4[10], Reserved6[6];
-  uint8_t St5Mm5[10], Reserved7[6];
-  uint8_t St6Mm6[10], Reserved8[6];
-  uint8_t St7Mm7[10], Reserved9[6];
-  uint8_t Xmm0[16];
-  uint8_t Xmm1[16];
-  uint8_t Xmm2[16];
-  uint8_t Xmm3[16];
-  uint8_t Xmm4[16];
-  uint8_t Xmm5[16];
-  uint8_t Xmm6[16];
-  uint8_t Xmm7[16];
-  uint8_t Reserved11[14 * 16];
+  uint16_t fcw_;
+  uint16_t fsw_;
+  uint16_t ftw_;
+  uint16_t opcode_;
+  uint64_t rip_;
+  uint64_t data_offset_;
+  uint8_t reserved1_[8];
+  uint8_t st0_mm0_[10], reserved2_[6];
+  uint8_t st1_mm1_[10], reserved3_[6];
+  uint8_t st2_mm2_[10], reserved4_[6];
+  uint8_t st3_mm3_[10], reserved5_[6];
+  uint8_t st4_mm4_[10], reserved6_[6];
+  uint8_t st5_mm5_[10], reserved7_[6];
+  uint8_t st6_mm6_[10], reserved8_[6];
+  uint8_t st7_mm7_[10], reserved9_[6];
+  uint8_t xmm0_[16];
+  uint8_t xmm1_[16];
+  uint8_t xmm2_[16];
+  uint8_t xmm3_[16];
+  uint8_t xmm4_[16];
+  uint8_t xmm5_[16];
+  uint8_t xmm6_[16];
+  uint8_t xmm7_[16];
+  uint8_t reserved11_[14 * 16];
 };
 
 class SystemContext {
-  uint64_t ExceptionData;  // ExceptionData is
-                           // additional data pushed
-                           // on the stack by some
-                           // types of x64 64-enum_bit
-                           // mode exceptions
-  FXSaveStateX64 FxSaveState;
-  uint64_t Dr0, Dr1, Dr2, Dr3, Dr6, Dr7;
-  uint64_t Cr0, Cr1 /* Reserved */, Cr2, Cr3, Cr4, Cr8;
-  uint64_t Rflags;
-  uint64_t Ldtr, Tr;
-  uint64_t Gdtr[2], Idtr[2];
-  uint64_t Rip;
-  uint64_t Gs, Fs, Es, Ds, Cs, Ss;
-  uint64_t Rdi, Rsi, Rbp, Rsp, Rbx, Rdx, Rcx, Rax;
-  uint64_t R8, R9, R10, R11, R12, R13, R14, R15;
+  uint64_t exception_data_;
+  FXSaveStateX64 fx_state_;
+  uint64_t dr0_, dr1_, dr2_, dr3_, dr6_, dr7_;
+  uint64_t cr0, cr1_, cr2_, cr3_, cr4_, cr8_;
+  uint64_t rflags_;
+  uint64_t ldtr_, tr_;
+  uint64_t gdtr_[2], idtr_[2];
+  uint64_t rip_;
+  uint64_t gs_, fs_, es_, ds_, cs_, ss_;
+  uint64_t rdi_, rsi_, rbp_, rsp_, rbx_, rdx_, rcx_, rax_;
+  uint64_t r8_, r9_, r10_, r11_, r12_, r13_, r14_, r15_;
 };
 
 }  // namespace efi
