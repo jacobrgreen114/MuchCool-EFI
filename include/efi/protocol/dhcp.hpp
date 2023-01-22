@@ -62,20 +62,20 @@ class Dhcp4PacketOption {
 
 #pragma pack(1)
 class Dhcp4Header final {
-  uint8_t op_code_;
-  uint8_t hw_type_;
-  uint8_t hw_addr_len_;
-  uint8_t hops_;
-  uint32_t xid_;
-  uint16_t seconds;
-  uint16_t reserved_;
+  uint8_t     op_code_;
+  uint8_t     hw_type_;
+  uint8_t     hw_addr_len_;
+  uint8_t     hops_;
+  uint32_t    xid_;
+  uint16_t    seconds;
+  uint16_t    reserved_;
   Ipv4Address client_addr_;
   Ipv4Address your_addr_;
   Ipv4Address server_addr_;
   Ipv4Address gateway_addr_;
-  uint8_t client_hw_addr_[16];
-  char8_t server_name[64];
-  char8_t boot_file_name[128];
+  uint8_t     client_hw_addr_[16];
+  char8_t     server_name[64];
+  char8_t     boot_file_name[128];
 };
 #pragma pack()
 
@@ -85,8 +85,8 @@ class Dhcp4Packet final {
   uint32_t length_;
   struct {
     Dhcp4Header header_;
-    uint32_t magik_;
-    uint8_t option_[1];
+    uint32_t    magik_;
+    uint8_t     option_[1];
   } dhcp4;
 };
 #pragma pack()
@@ -94,53 +94,53 @@ class Dhcp4Packet final {
 class DHCP4Protocol;
 
 using Dhcp4Callback = Status(EFI_CALL *)(DHCP4Protocol *self, void *context,
-                                         Dhcp4State current_state,
-                                         Dhcp4Event Dhcp4Event,
-                                         Dhcp4Packet *Packet,
+                                         Dhcp4State    current_state,
+                                         Dhcp4Event    Dhcp4Event,
+                                         Dhcp4Packet  *Packet,
                                          Dhcp4Packet **NewPacket);
 
 class Dhcp4ListenPoint final {
   Ipv4Address listen_address_;
   Ipv4Address subnet_mask_;
-  uint16_t listen_port_;
+  uint16_t    listen_port_;
 };
 
 class Dhcp4TransmitReceiveToken final {
-  Status status_;
-  Event completion_event_;
-  Ipv4Address remote_address_;
-  uint16_t remote_port_;
-  Ipv4Address gateway_address_;
-  uint32_t listen_point_count_;
+  Status            status_;
+  Event             completion_event_;
+  Ipv4Address       remote_address_;
+  uint16_t          remote_port_;
+  Ipv4Address       gateway_address_;
+  uint32_t          listen_point_count_;
   Dhcp4ListenPoint *listen_points_;
-  uint32_t timeout_value_;
-  Dhcp4Packet *packet_;
-  uint32_t response_count_;
-  Dhcp4Packet *response_list_;
+  uint32_t          timeout_value_;
+  Dhcp4Packet      *packet_;
+  uint32_t          response_count_;
+  Dhcp4Packet      *response_list_;
 };
 
 class Dhcp4ConfigData {
-  uint32_t discover_try_count_;
-  uint32_t *discover_timeout_;
-  uint32_t request_try_count_;
-  uint32_t *request_timeout_;
-  Ipv4Address client_address_;
-  Dhcp4Callback dhcp4_callback_;
-  void *callback_context_;
-  uint32_t option_count_;
+  uint32_t            discover_try_count_;
+  uint32_t           *discover_timeout_;
+  uint32_t            request_try_count_;
+  uint32_t           *request_timeout_;
+  Ipv4Address         client_address_;
+  Dhcp4Callback       dhcp4_callback_;
+  void               *callback_context_;
+  uint32_t            option_count_;
   Dhcp4PacketOption **option_list_;
 };
 
 class Dhcp4ModeData final {
-  Dhcp4State state_;
+  Dhcp4State      state_;
   Dhcp4ConfigData config_data_;
-  Ipv4Address client_address_;
-  MacAddress client_mac_address_;
-  Ipv4Address server_address_;
-  Ipv4Address router_address_;
-  Ipv4Address subnet_mask_;
-  uint32_t lease_time_;
-  Dhcp4Packet *reply_packet_;
+  Ipv4Address     client_address_;
+  MacAddress      client_mac_address_;
+  Ipv4Address     server_address_;
+  Ipv4Address     router_address_;
+  Ipv4Address     subnet_mask_;
+  uint32_t        lease_time_;
+  Dhcp4Packet    *reply_packet_;
 };
 
 class DHCP4Protocol final {
@@ -152,21 +152,21 @@ class DHCP4Protocol final {
       DHCP4Protocol *self, const Dhcp4ModeData *dhcp4_mode_data) noexcept;
 
   using StartFn           = Status(EFI_CALL *)(DHCP4Protocol *self,
-                                     Event completion_event) noexcept;
+                                     Event          completion_event) noexcept;
 
   using RenewRebindFn     = Status(EFI_CALL *)(DHCP4Protocol *self,
-                                           bool rebid_request,
+                                           bool           rebid_request,
                                            Event completion_event) noexcept;
 
   using ReleaseFn         = Status(EFI_CALL *)(DHCP4Protocol *self) noexcept;
 
   using StopFn            = Status(EFI_CALL *)(DHCP4Protocol *self) noexcept;
 
-  using BuildFn           = Status(EFI_CALL *)(DHCP4Protocol *self,
-                                     const Dhcp4Packet *seed_packet,
-                                     uint32_t delete_count,
-                                     const uint8_t *delete_list,
-                                     uint32_t append_count,
+  using BuildFn           = Status(EFI_CALL *)(DHCP4Protocol           *self,
+                                     const Dhcp4Packet       *seed_packet,
+                                     uint32_t                 delete_count,
+                                     const uint8_t           *delete_list,
+                                     uint32_t                 append_count,
                                      const Dhcp4PacketOption *append_list[],
                                      Dhcp4Packet **new_packet) noexcept;
 
@@ -177,15 +177,15 @@ class DHCP4Protocol final {
       DHCP4Protocol *self, Dhcp4Packet *packet, uint32_t *option_count,
       Dhcp4PacketOption *packet_option_list[]) noexcept;
 
-  const GetModeDataFn get_mode_data_;
-  const ConfigureFn configure_;
-  const StartFn start_;
-  const RenewRebindFn renew_rebind_;
-  const ReleaseFn release_;
-  const StopFn stop_;
-  const BuildFn build_;
+  const GetModeDataFn     get_mode_data_;
+  const ConfigureFn       configure_;
+  const StartFn           start_;
+  const RenewRebindFn     renew_rebind_;
+  const ReleaseFn         release_;
+  const StopFn            stop_;
+  const BuildFn           build_;
   const TransmitRecieveFn transmit_recieve_;
-  const ParseFn parse_;
+  const ParseFn           parse_;
 
  public:
   DHCP4Protocol()                                          = delete;
@@ -211,7 +211,7 @@ class DHCP4Protocol final {
     return start_(this, completion_event);
   }
 
-  FORCE_INLINE auto renew_rebind(bool rebid_request,
+  FORCE_INLINE auto renew_rebind(bool  rebid_request,
                                  Event completion_event) noexcept {
     return renew_rebind_(this, rebid_request, completion_event);
   }
@@ -227,7 +227,7 @@ class DHCP4Protocol final {
   FORCE_INLINE auto build(const Dhcp4Packet &seed_packet, uint32_t delete_count,
                           const uint8_t *delete_list, uint32_t append_count,
                           const Dhcp4PacketOption *append_list[],
-                          Dhcp4Packet **new_packet) noexcept {
+                          Dhcp4Packet            **new_packet) noexcept {
     return build_(this, &seed_packet, delete_count, delete_list, append_count,
                   append_list, new_packet);
   }
@@ -242,11 +242,11 @@ class DHCP4Protocol final {
     return parse_(this, packet, option_count, packet_option_list);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x8a219718,
-                  0x4ef5,
-                  0x4761,
-                  {0x91, 0xc8, 0xc0, 0xf0, 0x4b, 0xda, 0x9e, 0x56}};
+  static constexpr auto guid =
+      Guid{0x8a219718,
+           0x4ef5,
+           0x4761,
+           {0x91, 0xc8, 0xc0, 0xf0, 0x4b, 0xda, 0x9e, 0x56}};
 };
 
 class DHCP6Protocol final {

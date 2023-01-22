@@ -45,6 +45,7 @@
 #include "protocol/nic.hpp"
 #include "protocol/simple_network.hpp"
 #include "protocol/managed_network.hpp"
+#include "protocol/ipv4.hpp"
 #include "protocol/arp.hpp"
 #include "protocol/dhcp.hpp"
 #include "protocol/dns_v4.hpp"

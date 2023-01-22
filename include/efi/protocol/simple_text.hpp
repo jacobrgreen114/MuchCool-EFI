@@ -59,13 +59,13 @@ class InputKey {
 
 class TextOutputMode {
  private:
-  uint32_t max_mode_;
+  uint32_t      max_mode_;
 
-  int32_t mode_;
+  int32_t       mode_;
   TextAttribute attribute_;
-  int32_t cursor_column_;
-  int32_t cursor_row_;
-  bool visible_;
+  int32_t       cursor_column_;
+  int32_t       cursor_row_;
+  bool          visible_;
 };
 
 class SimpleTextInputProtocol final {
@@ -76,9 +76,9 @@ class SimpleTextInputProtocol final {
   using InputReadKeyFn = Status(EFI_CALL*)(SimpleTextInputProtocol* self,
                                            InputKey* out_key) noexcept;
 
-  const InputResetFn reset_;
+  const InputResetFn   reset_;
   const InputReadKeyFn read_key_stroke_;
-  const Event wait_for_key_;
+  const Event          wait_for_key_;
 
  public:
   SimpleTextInputProtocol()                               = delete;
@@ -102,11 +102,11 @@ class SimpleTextInputProtocol final {
     return wait_for_key_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x387477c1,
-                  0x69c7,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x387477c1,
+           0x69c7,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class SimpleTextOutputProtocol final {
@@ -121,7 +121,7 @@ class SimpleTextOutputProtocol final {
                                              const char16_t* str) noexcept;
 
   using TextQueryModeFn    = Status(EFI_CALL*)(SimpleTextOutputProtocol* self,
-                                            uintn_t mode_number,
+                                            uintn_t  mode_number,
                                             uintn_t* out_columns,
                                             uintn_t* out_rows) noexcept;
 
@@ -140,16 +140,16 @@ class SimpleTextOutputProtocol final {
   using TextEnableCursorFn = Status(EFI_CALL*)(SimpleTextOutputProtocol* self,
                                                bool visible) noexcept;
 
-  const TextResetFn reset_;
-  const TextStringFn output_string_;
-  const TextTestStringFn test_string_;
-  const TextQueryModeFn query_mode_;
-  const TextSetModeFn set_mode_;
-  const TextSetAttributeFn set_attribute_;
-  const TextClearScreenFn clear_screen_;
+  const TextResetFn             reset_;
+  const TextStringFn            output_string_;
+  const TextTestStringFn        test_string_;
+  const TextQueryModeFn         query_mode_;
+  const TextSetModeFn           set_mode_;
+  const TextSetAttributeFn      set_attribute_;
+  const TextClearScreenFn       clear_screen_;
   const TextSetCursorPositionFn set_cursor_position_;
-  const TextEnableCursorFn enable_cursor_;
-  const TextOutputMode* mode_;
+  const TextEnableCursorFn      enable_cursor_;
+  const TextOutputMode*         mode_;
 
  public:
   SimpleTextOutputProtocol()                                = delete;
@@ -198,11 +198,11 @@ class SimpleTextOutputProtocol final {
     return enable_cursor_(this, visible);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x387477c2,
-                  0x69c7,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x387477c2,
+           0x69c7,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 }  // namespace efi

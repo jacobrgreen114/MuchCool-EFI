@@ -25,7 +25,7 @@ namespace efi {
 
 class EdidDiscoveredProtocol final {
  private:
-  const uint32_t size_of_edid_;
+  const uint32_t       size_of_edid_;
   const uint8_t* const edid_;
 
  public:
@@ -44,16 +44,16 @@ class EdidDiscoveredProtocol final {
     return edid_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x1c0c34f6,
-                  0xd380,
-                  0x41fa,
-                  {0xa0, 0x49, 0x8a, 0xd0, 0x6c, 0x1a, 0x66, 0xaa}};
+  static constexpr auto guid =
+      Guid{0x1c0c34f6,
+           0xd380,
+           0x41fa,
+           {0xa0, 0x49, 0x8a, 0xd0, 0x6c, 0x1a, 0x66, 0xaa}};
 };
 
 class EdidActiveProtocol final {
  private:
-  const uint32_t size_of_edid_;
+  const uint32_t       size_of_edid_;
   const uint8_t* const edid_;
 
  public:
@@ -71,17 +71,17 @@ class EdidActiveProtocol final {
     return edid_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xbd8c1056,
-                  0x9f36,
-                  0x44ec,
-                  {0x92, 0xa8, 0xa6, 0x33, 0x7f, 0x81, 0x79, 0x86}};
+  static constexpr auto guid =
+      Guid{0xbd8c1056,
+           0x9f36,
+           0x44ec,
+           {0x92, 0xa8, 0xa6, 0x33, 0x7f, 0x81, 0x79, 0x86}};
 };
 
 class EdidOverrideProtocol final {
  private:
   using GetEDIDFn = Status(EFI_CALL*)(EdidOverrideProtocol* self,
-                                      const Handle* child_handle,
+                                      const Handle*         child_handle,
                                       uint32_t* attributes, uintn_t* edid_size,
                                       uint8_t** edid) noexcept;
 
@@ -100,11 +100,11 @@ class EdidOverrideProtocol final {
     return get_edid_(this, child_handle, attributes, edid_size, edid);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x48ecb431,
-                  0xfb72,
-                  0x45c0,
-                  {0xa9, 0x22, 0xf4, 0x58, 0xfe, 0x04, 0x0b, 0xd5}};
+  static constexpr auto guid =
+      Guid{0x48ecb431,
+           0xfb72,
+           0x45c0,
+           {0xa9, 0x22, 0xf4, 0x58, 0xfe, 0x04, 0x0b, 0xd5}};
 };
 
 }  // namespace efi

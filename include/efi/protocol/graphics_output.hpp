@@ -53,21 +53,21 @@ class BltPixel {
 };
 
 class GraphicsOutputModeInformation final {
-  uint32_t version_;
-  uint32_t horizontal_resolution_;
-  uint32_t vertical_resolution_;
+  uint32_t            version_;
+  uint32_t            horizontal_resolution_;
+  uint32_t            vertical_resolution_;
   GraphicsPixelFormat pixel_format_;
-  PixelBitmask pixel_information_;
-  uint32_t pixels_per_scan_line_;
+  PixelBitmask        pixel_information_;
+  uint32_t            pixels_per_scan_line_;
 };
 
 class GraphicsOutputMode final {
-  uint32_t max_mode_;
-  uint32_t mode_;
+  uint32_t                       max_mode_;
+  uint32_t                       mode_;
   GraphicsOutputModeInformation* info_;
-  uintn_t size_of_info_;
-  PhysicalAddress framebuffer_base_;
-  uintn_t framebuffer_size_;
+  uintn_t                        size_of_info_;
+  PhysicalAddress                framebuffer_base_;
+  uintn_t                        framebuffer_size_;
 };
 
 class GraphicsOutputProtocol final {
@@ -85,9 +85,9 @@ class GraphicsOutputProtocol final {
                                   uintn_t dest_x, uintn_t dest_y, uintn_t width,
                                   uintn_t height, uintn_t delta) noexcept;
 
-  const QueryModeFn query_mode_;
-  const SetModeFn set_mode_;
-  const BltFn blt_;
+  const QueryModeFn               query_mode_;
+  const SetModeFn                 set_mode_;
+  const BltFn                     blt_;
   const GraphicsOutputMode* const mode_;
 
  public:
@@ -120,11 +120,11 @@ class GraphicsOutputProtocol final {
     return *mode_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x9042a9de,
-                  0x23dc,
-                  0x4a38,
-                  {0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a}};
+  static constexpr auto guid =
+      Guid{0x9042a9de,
+           0x23dc,
+           0x4a38,
+           {0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a}};
 };
 
 }  // namespace efi

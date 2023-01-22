@@ -28,7 +28,7 @@ class DebugPortProtocol final {
   using ResetFn = Status(EFI_CALL*)(DebugPortProtocol* self) noexcept;
 
   using WriteFn = Status(EFI_CALL*)(DebugPortProtocol* self, uint32_t timeout,
-                                    uintn_t* buffer_size,
+                                    uintn_t*    buffer_size,
                                     const void* buffer) noexcept;
 
   using ReadFn  = Status(EFI_CALL*)(DebugPortProtocol* self, uint32_t timeout,
@@ -38,8 +38,8 @@ class DebugPortProtocol final {
 
   const ResetFn reset_;
   const WriteFn write_;
-  const ReadFn read_;
-  const PollFn poll_;
+  const ReadFn  read_;
+  const PollFn  poll_;
 
  public:
   DebugPortProtocol()                                            = delete;
@@ -67,11 +67,11 @@ class DebugPortProtocol final {
     return poll_(this);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xEBA4E8D2,
-                  0x3858,
-                  0x41EC,
-                  {0xA2, 0x81, 0x26, 0x47, 0xBA, 0x96, 0x60, 0xD0}};
+  static constexpr auto guid =
+      Guid{0xEBA4E8D2,
+           0x3858,
+           0x41EC,
+           {0xA2, 0x81, 0x26, 0x47, 0xBA, 0x96, 0x60, 0xD0}};
 };
 
 }  // namespace efi

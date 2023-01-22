@@ -24,34 +24,34 @@
 namespace efi {
 
 class ManagedNetworkReceiveData final {
-  Time timestamp_;
-  Event recycle_event_;
+  Time     timestamp_;
+  Event    recycle_event_;
   uint32_t packet_length_;
   uint32_t header_length_;
   uint32_t address_length_;
   uint32_t data_length_;
-  bool roadcast_flag_;
-  bool multicast_flag_;
-  bool promiscuous_flag_;
+  bool     roadcast_flag_;
+  bool     multicast_flag_;
+  bool     promiscuous_flag_;
   uint16_t protocol_type_;
-  void* destination_address_;
-  void* source_address_;
-  void* media_header_;
-  void* packet_data_;
+  void*    destination_address_;
+  void*    source_address_;
+  void*    media_header_;
+  void*    packet_data_;
 };
 
 class ManagedNetworkFragmentData final {
   uint32_t length_;
-  void* buffer_;
+  void*    buffer_;
 };
 
 class ManagedNetworkTransmitData final {
-  MacAddress* destination_address_;
-  MacAddress* source_address_;
-  uint16_t protocol_type_;
-  uint32_t data_length_;
-  uint16_t header_length_;
-  uint16_t fragment_count_;
+  MacAddress*                destination_address_;
+  MacAddress*                source_address_;
+  uint16_t                   protocol_type_;
+  uint32_t                   data_length_;
+  uint16_t                   header_length_;
+  uint16_t                   fragment_count_;
   ManagedNetworkFragmentData fragment_table_[1];
 
  public:
@@ -62,10 +62,10 @@ class ManagedNetworkTransmitData final {
 };
 
 class ManagedNetworkCompletionToken {
-  Event event_;
+  Event  event_;
   Status status_;
   union {
-    ManagedNetworkReceiveData* rx_data;
+    ManagedNetworkReceiveData*  rx_data;
     ManagedNetworkTransmitData* tx_data;
   } data_;
 
@@ -105,13 +105,13 @@ class ManagedNetworkConfigData final {
   uint32_t received_queue_timeout_value_;
   uint32_t transmit_queue_timeout_value_;
   uint16_t protocol_type_filter_;
-  bool enable_unicast_receive_;
-  bool enable_multicast_receive_;
-  bool enable_broadcast_receive_;
-  bool enable_promiscuous_receive_;
-  bool flush_queues_on_reset_;
-  bool enable_receive_timestamps_;
-  bool disable_background_polling_;
+  bool     enable_unicast_receive_;
+  bool     enable_multicast_receive_;
+  bool     enable_broadcast_receive_;
+  bool     enable_promiscuous_receive_;
+  bool     flush_queues_on_reset_;
+  bool     enable_receive_timestamps_;
+  bool     disable_background_polling_;
 };
 
 class ManagedNetworkProtocol final {
@@ -121,39 +121,39 @@ class ManagedNetworkProtocol final {
       SimpleNetworkMode* mode_data) noexcept;
 
   using ConfigureFn =
-      Status(EFI_CALL*)(ManagedNetworkProtocol* self,
+      Status(EFI_CALL*)(ManagedNetworkProtocol*         self,
                         const ManagedNetworkConfigData* config_data) noexcept;
 
   using MCastIpToMacFn = Status(EFI_CALL*)(ManagedNetworkProtocol* self,
-                                           bool ipv6,
-                                           const IpAddress& ip_address,
+                                           bool                    ipv6,
+                                           const IpAddress&        ip_address,
                                            MacAddress* mac_address) noexcept;
 
   using GroupsFn = Status(EFI_CALL*)(ManagedNetworkProtocol* self, bool join,
                                      const MacAddress* mac_address) noexcept;
 
   using TransmitFn =
-      Status(EFI_CALL*)(ManagedNetworkProtocol* self,
+      Status(EFI_CALL*)(ManagedNetworkProtocol*                self,
                         ManagedNetworkTransmitCompletionToken* token) noexcept;
 
   using ReceiveFn =
-      Status(EFI_CALL*)(ManagedNetworkProtocol* self,
+      Status(EFI_CALL*)(ManagedNetworkProtocol*               self,
                         ManagedNetworkReceiveCompletionToken* token) noexcept;
 
   using CancelFn =
-      Status(EFI_CALL*)(ManagedNetworkProtocol* self,
+      Status(EFI_CALL*)(ManagedNetworkProtocol*        self,
                         ManagedNetworkCompletionToken* token) noexcept;
 
   using PollFn = Status(EFI_CALL*)(const ManagedNetworkProtocol* self) noexcept;
 
-  const GetModeDataFn get_mode_data_;
-  const ConfigureFn configure_;
+  const GetModeDataFn  get_mode_data_;
+  const ConfigureFn    configure_;
   const MCastIpToMacFn mcast_ip_to_mac_;
-  const GroupsFn groups_;
-  const TransmitFn transmit_;
-  const ReceiveFn receive_;
-  const CancelFn cancel_;
-  const PollFn poll_;
+  const GroupsFn       groups_;
+  const TransmitFn     transmit_;
+  const ReceiveFn      receive_;
+  const CancelFn       cancel_;
+  const PollFn         poll_;
 
  public:
   ManagedNetworkProtocol()                                            = delete;
@@ -175,12 +175,12 @@ class ManagedNetworkProtocol final {
   }
 
   FORCE_INLINE auto mcast_ip_to_mac(const Ipv4Address& ip_address,
-                                    MacAddress* mac_address) noexcept {
+                                    MacAddress*        mac_address) noexcept {
     return mcast_ip_to_mac_(this, false, ip_address, mac_address);
   }
 
   FORCE_INLINE auto mcast_ip_to_mac(const Ipv6Address& ip_address,
-                                    MacAddress* mac_address) noexcept {
+                                    MacAddress*        mac_address) noexcept {
     return mcast_ip_to_mac_(this, true, ip_address, mac_address);
   }
 
@@ -214,11 +214,11 @@ class ManagedNetworkProtocol final {
     return poll_(this);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x7ab33a91,
-                  0xace5,
-                  0x4326,
-                  {0xb5, 0x72, 0xe7, 0xee, 0x33, 0xd3, 0x9f, 0x16}};
+  static constexpr auto guid =
+      Guid{0x7ab33a91,
+           0xace5,
+           0x4326,
+           {0xb5, 0x72, 0xe7, 0xee, 0x33, 0xd3, 0x9f, 0x16}};
 };
 
 }  // namespace efi

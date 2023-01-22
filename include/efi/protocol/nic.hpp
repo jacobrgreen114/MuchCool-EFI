@@ -31,16 +31,16 @@ class NetworkInterfaceIdentifierProtocol final {
  private:
   using StringIdArray = std::array<char8_t, 4>;
 
-  uint64_t revision_;
-  uint64_t id_;
-  uint64_t image_addr_;
-  uint32_t image_size_;
-  StringIdArray string_id_;
+  uint64_t             revision_;
+  uint64_t             id_;
+  uint64_t             image_addr_;
+  uint32_t             image_size_;
+  StringIdArray        string_id_;
   NetworkInterfaceType type_;
-  uint8_t major_ver_;
-  uint8_t minor_ver_;
-  bool ipv6_supported_;
-  uint16_t if_num_;
+  uint8_t              major_ver_;
+  uint8_t              minor_ver_;
+  bool                 ipv6_supported_;
+  uint16_t             if_num_;
 
  public:
   NetworkInterfaceIdentifierProtocol() = delete;
@@ -90,11 +90,11 @@ class NetworkInterfaceIdentifierProtocol final {
     return if_num_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x1ACED566,
-                  0x76ED,
-                  0x4218,
-                  {0xBC, 0x81, 0x76, 0x7F, 0x1F, 0x97, 0x7A, 0x89}};
+  static constexpr auto guid =
+      Guid{0x1ACED566,
+           0x76ED,
+           0x4218,
+           {0xBC, 0x81, 0x76, 0x7F, 0x1F, 0x97, 0x7A, 0x89}};
 };
 
 }  // namespace efi

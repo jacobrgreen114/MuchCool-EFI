@@ -50,7 +50,7 @@ enum class ExceptionType : uintn_t {
 
 using PeriodicCallback  = void(EFI_CALL *)(SystemContext *systemContext);
 
-using ExceptionCallback = void(EFI_CALL *)(ExceptionType exception_type,
+using ExceptionCallback = void(EFI_CALL *)(ExceptionType  exception_type,
                                            SystemContext *systemContext);
 
 class DebugSupportProtocol final {
@@ -65,16 +65,16 @@ class DebugSupportProtocol final {
   using RegisterExceptionCallbackFn =
       Status(EFI_CALL *)(DebugSupportProtocol *self, uintn_t processor_index,
                          ExceptionCallback exception_callback,
-                         ExceptionType exception_type) noexcept;
+                         ExceptionType     exception_type) noexcept;
 
   using InvalidateInstructionCacheFn =
       Status(EFI_CALL *)(DebugSupportProtocol *self, uintn_t processor_index,
                          void *start, uint64_t length);
 
-  const InstructionSetArchitecture isa_;
-  const GetMaximumProcessorIndexFn get_maximum_processor_index_;
-  const RegisterPeriodicCallbackFn register_periodic_callback_;
-  const RegisterExceptionCallbackFn register_exception_callback_;
+  const InstructionSetArchitecture   isa_;
+  const GetMaximumProcessorIndexFn   get_maximum_processor_index_;
+  const RegisterPeriodicCallbackFn   register_periodic_callback_;
+  const RegisterExceptionCallbackFn  register_exception_callback_;
   const InvalidateInstructionCacheFn invalidate_instruction_cache_;
 
  public:
@@ -108,17 +108,17 @@ class DebugSupportProtocol final {
                                         exception_callback, exception_type);
   }
 
-  FORCE_INLINE auto invalidate_instruction_cache(uintn_t processor_index,
-                                                 void *start,
+  FORCE_INLINE auto invalidate_instruction_cache(uintn_t  processor_index,
+                                                 void    *start,
                                                  uint64_t length) noexcept {
     return invalidate_instruction_cache_(this, processor_index, start, length);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x2755590C,
-                  0x6F3C,
-                  0x42FA,
-                  {0x9E, 0xA4, 0xA3, 0xBA, 0x54, 0x3C, 0xDA, 0x25}};
+  static constexpr auto guid =
+      Guid{0x2755590C,
+           0x6F3C,
+           0x42FA,
+           {0x9E, 0xA4, 0xA3, 0xBA, 0x54, 0x3C, 0xDA, 0x25}};
 };
 
 }  // namespace efi

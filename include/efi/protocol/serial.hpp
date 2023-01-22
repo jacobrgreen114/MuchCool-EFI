@@ -57,14 +57,14 @@ enum class ControlBits : uint32_t {
 };
 
 class SerialIOMode final {
-  uint32_t control_mask_;
+  uint32_t   control_mask_;
 
-  uint32_t timeout_;
-  uint64_t baudrate_;
-  uint32_t receive_fifo_depth_;
-  uint32_t databits_;
+  uint32_t   timeout_;
+  uint64_t   baudrate_;
+  uint32_t   receive_fifo_depth_;
+  uint32_t   databits_;
   ParityType parity_;
-  StopBits stopbits_;
+  StopBits   stopbits_;
 };
 
 class SerialIOProtocol final {
@@ -87,15 +87,15 @@ class SerialIOProtocol final {
   using ReadFn = Status(EFI_CALL*)(SerialIOProtocol* self, uintn_t* buffer_size,
                                    void* buffer);
 
-  const uint32_t revision_;
-  const ResetFn reset_;
-  const SetAttributeFn set_attribute_;
-  const SetControlBitsFn set_control_;
-  const GetControlBitsFn get_control_;
-  const WriteFn write_;
-  const ReadFn read_;
+  const uint32_t            revision_;
+  const ResetFn             reset_;
+  const SetAttributeFn      set_attribute_;
+  const SetControlBitsFn    set_control_;
+  const GetControlBitsFn    get_control_;
+  const WriteFn             write_;
+  const ReadFn              read_;
   const SerialIOMode* const mode_;
-  const Guid* const device_type_guid_;
+  const Guid* const         device_type_guid_;
 
  public:
   SerialIOProtocol()                                           = delete;
@@ -141,20 +141,20 @@ class SerialIOProtocol final {
     return *device_type_guid_;
   }
 
-  static constexpr auto Guid =
-      efi::Guid{0xBB25CF6F,
-                0xF1D4,
-                0x11D2,
-                {0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd}};
+  static constexpr auto guid =
+      Guid{0xBB25CF6F,
+           0xF1D4,
+           0x11D2,
+           {0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd}};
 
   static constexpr uint32_t Revision1   = 0x00010000;
   static constexpr uint32_t Revision1p1 = 0x00010001;
 
-  static constexpr auto TerminalDeviceTypeGuid =
-      efi::Guid{0x6ad9a60f,
-                0x5815,
-                0x4c7c,
-                {0x8a, 0x10, 0x50, 0x53, 0xd2, 0xbf, 0x7a, 0x1b}};
+  static constexpr auto     TerminalDeviceTypeGuid =
+      Guid{0x6ad9a60f,
+           0x5815,
+           0x4c7c,
+           {0x8a, 0x10, 0x50, 0x53, 0xd2, 0xbf, 0x7a, 0x1b}};
 };
 
 }  // namespace efi

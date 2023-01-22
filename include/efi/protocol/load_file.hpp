@@ -25,7 +25,7 @@ namespace efi {
 
 class LoadFileProtocol {
  private:
-  using LoadFileFn = Status(EFI_CALL*)(LoadFileProtocol* self,
+  using LoadFileFn = Status(EFI_CALL*)(LoadFileProtocol*         self,
                                        const DevicePathProtocol& file_path,
                                        bool boot_policy, uintn_t* buffer_size,
                                        void* buffer);
@@ -46,16 +46,16 @@ class LoadFileProtocol {
     return load_file_(this, file_path, boot_policy, buffer_size, buffer);
   }
 
-  static constexpr auto Guid =
-      efi::Guid{0x56EC3091,
-                0x954C,
-                0x11d2,
-                {0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x56EC3091,
+           0x954C,
+           0x11d2,
+           {0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class LoadFile2Protocol {
  private:
-  using LoadFileFn = Status(EFI_CALL*)(LoadFile2Protocol* self,
+  using LoadFileFn = Status(EFI_CALL*)(LoadFile2Protocol*        self,
                                        const DevicePathProtocol& file_path,
                                        bool boot_policy, uintn_t* buffer_size,
                                        void* buffer);
@@ -75,11 +75,11 @@ class LoadFile2Protocol {
     return load_file_(this, file_path, false, buffer_size, buffer);
   }
 
-  static constexpr auto Guid =
-      efi::Guid{0x4006c0c1,
-                0xfcb3,
-                0x403e,
-                {0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d}};
+  static constexpr auto guid =
+      Guid{0x4006c0c1,
+           0xfcb3,
+           0x403e,
+           {0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d}};
 };
 
 }  // namespace efi

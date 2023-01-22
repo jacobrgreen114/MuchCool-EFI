@@ -36,8 +36,8 @@ class DiskIOProtocol final {
                                         uint64_t offset, uintn_t buffer_size,
                                         const void* buffer) noexcept;
 
-  const Revision revision_;
-  const ReadDiskFn read_disk_;
+  const Revision    revision_;
+  const ReadDiskFn  read_disk_;
   const WriteDiskFn write_disk_;
 
  public:
@@ -54,16 +54,16 @@ class DiskIOProtocol final {
   }
 
   FORCE_INLINE auto write_disk(uint32_t media_id, uint64_t offset,
-                               uintn_t buffer_size,
+                               uintn_t     buffer_size,
                                const void* buffer) noexcept {
     return write_disk_(this, media_id, offset, buffer_size, buffer);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xCE345171,
-                  0xBA0B,
-                  0x11d2,
-                  {0x8e, 0x4F, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0xCE345171,
+           0xBA0B,
+           0x11d2,
+           {0x8e, 0x4F, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class DiskIO2Protocol final {

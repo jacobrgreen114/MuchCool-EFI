@@ -41,21 +41,21 @@ class BlockIOProtocol final {
   using ReadBlocksFn  = Status(EFI_CALL*)(BlockIOProtocol* self,
                                          uint32_t media_id, LBA lba,
                                          uintn_t buffer_size,
-                                         void* buffer) noexcept;
+                                         void*   buffer) noexcept;
 
   using WriteBlocksFn = Status(EFI_CALL*)(BlockIOProtocol* self,
                                           uint32_t media_id, LBA lba,
-                                          uintn_t buffer_size,
+                                          uintn_t     buffer_size,
                                           const void* buffer) noexcept;
 
   using FlushBlocksFn = Status(EFI_CALL*)(BlockIOProtocol* self) noexcept;
 
-  const Revision revision_;
+  const Revision            revision_;
   const BlockToMedia* const media_;
-  const ResetFn reset_;
-  const ReadBlocksFn read_blocks_;
-  const WriteBlocksFn write_blocks_;
-  const FlushBlocksFn flush_blocks_;
+  const ResetFn             reset_;
+  const ReadBlocksFn        read_blocks_;
+  const WriteBlocksFn       write_blocks_;
+  const FlushBlocksFn       flush_blocks_;
 
  public:
   BlockIOProtocol()                                          = delete;
@@ -83,7 +83,7 @@ class BlockIOProtocol final {
   }
 
   FORCE_INLINE auto write_blocks(uint32_t media_id, LBA lba,
-                                 uintn_t buffer_size,
+                                 uintn_t     buffer_size,
                                  const void* buffer) noexcept {
     return write_blocks_(this, media_id, lba, buffer_size, buffer);
   }
@@ -92,11 +92,11 @@ class BlockIOProtocol final {
     return flush_blocks_(this);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x964e5b21,
-                  0x6459,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x964e5b21,
+           0x6459,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class BlockIO2Protocol final {
@@ -104,7 +104,7 @@ class BlockIO2Protocol final {
 };
 
 class EraseBlockToken {
-  Event event_;
+  Event  event_;
   Status transaction_status_;
 };
 
@@ -120,10 +120,10 @@ class EraseBlockProtocol final {
   using EraseBlockFn = Status(EFI_CALL*)(EraseBlockProtocol* self,
                                          uint32_t media_id, LBA lba,
                                          EraseBlockToken* token,
-                                         uintn_t size) noexcept;
+                                         uintn_t          size) noexcept;
 
-  const Revision revision_;
-  const uint32_t erase_length_granularity;
+  const Revision     revision_;
+  const uint32_t     erase_length_granularity;
   const EraseBlockFn erase_blocks_;
 
  public:
@@ -136,15 +136,15 @@ class EraseBlockProtocol final {
 
   FORCE_INLINE auto erase_blocks(uint32_t media_id, LBA lba,
                                  EraseBlockToken* token,
-                                 uintn_t size) noexcept {
+                                 uintn_t          size) noexcept {
     return erase_blocks_(this, media_id, lba, token, size);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x95A9A93E,
-                  0xA86E,
-                  0x4926,
-                  {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}};
+  static constexpr auto guid =
+      Guid{0x95A9A93E,
+           0xA86E,
+           0x4926,
+           {0xaa, 0xef, 0x99, 0x18, 0xe7, 0x72, 0xd9, 0x87}};
 };
 
 }  // namespace efi

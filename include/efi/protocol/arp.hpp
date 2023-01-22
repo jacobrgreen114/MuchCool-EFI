@@ -25,8 +25,8 @@ namespace efi {
 
 class ArpConfigData {
   uint16_t sw_address_type_;
-  uint8_t sw_address_length_;
-  void* station_address_;
+  uint8_t  sw_address_length_;
+  void*    station_address_;
   uint32_t entry_timeout_;
   uint32_t retry_count_;
   uint32_t retry_timeout_;
@@ -34,28 +34,28 @@ class ArpConfigData {
 
 class ArpFindData {
   uint32_t size_;
-  bool deny_flag_;
-  bool static_flag_;
+  bool     deny_flag_;
+  bool     static_flag_;
   uint16_t hw_address_type_;
   uint16_t sw_address_type_;
-  uint8_t hw_address_length_;
-  uint8_t sw_address_length_;
+  uint8_t  hw_address_length_;
+  uint8_t  sw_address_length_;
 };
 
 class ArpProtocol final {
  private:
-  using ConfigureFn = Status(EFI_CALL*)(ArpProtocol* self,
+  using ConfigureFn = Status(EFI_CALL*)(ArpProtocol*         self,
                                         const ArpConfigData* data) noexcept;
 
   using AddFn       = Status(EFI_CALL*)(ArpProtocol* self, bool deny_flag,
                                   const void* target_sw_address,
                                   const void* target_hw_address,
-                                  uint32_t timeout_value,
-                                  bool overwrite) noexcept;
+                                  uint32_t    timeout_value,
+                                  bool        overwrite) noexcept;
 
   using FindFn      = Status(EFI_CALL*)(ArpProtocol* self, bool by_sw_address,
                                    const void* address_buffer,
-                                   uint32_t* entry_length,
+                                   uint32_t*   entry_length,
                                    uint32_t* entry_count, ArpFindData** entries,
                                    bool refresh) noexcept;
 
@@ -65,29 +65,29 @@ class ArpProtocol final {
   using FlushFn     = Status(EFI_CALL*)(ArpProtocol* self) noexcept;
 
   using RequestFn   = Status(EFI_CALL*)(ArpProtocol* self,
-                                      const void* target_sw_address,
-                                      Event resolved_event,
-                                      void* target_hw_address) noexcept;
+                                      const void*  target_sw_address,
+                                      Event        resolved_event,
+                                      void*        target_hw_address) noexcept;
 
   using CancelFn    = Status(EFI_CALL*)(ArpProtocol* self,
-                                     const void* target_sw_address,
-                                     Event resolved_event) noexcept;
+                                     const void*  target_sw_address,
+                                     Event        resolved_event) noexcept;
 
   const ConfigureFn configure_;
-  const AddFn add_;
-  const FindFn find_;
-  const DeleteFn delete_;
-  const FlushFn flush_;
-  const RequestFn request_;
-  const CancelFn cancel_;
+  const AddFn       add_;
+  const FindFn      find_;
+  const DeleteFn    delete_;
+  const FlushFn     flush_;
+  const RequestFn   request_;
+  const CancelFn    cancel_;
 
  public:
-  ArpProtocol()                                      = delete;
-  ArpProtocol(ArpProtocol&&)                         = delete;
-  ArpProtocol(const ArpProtocol&)                    = delete;
-  ~ArpProtocol()                                     = delete;
-  auto operator=(ArpProtocol&&) -> ArpProtocol&      = delete;
-  auto operator=(const ArpProtocol&) -> ArpProtocol& = delete;
+  ArpProtocol()                                                   = delete;
+  ArpProtocol(ArpProtocol&&)                                      = delete;
+  ArpProtocol(const ArpProtocol&)                                 = delete;
+  ~ArpProtocol()                                                  = delete;
+  auto              operator=(ArpProtocol&&) -> ArpProtocol&      = delete;
+  auto              operator=(const ArpProtocol&) -> ArpProtocol& = delete;
 
   FORCE_INLINE auto configure(const ArpConfigData& data) noexcept {
     return configure_(this, &data);
@@ -111,7 +111,7 @@ class ArpProtocol final {
                  entries, refresh);
   }
 
-  FORCE_INLINE auto delete_entry(bool by_sw_address,
+  FORCE_INLINE auto delete_entry(bool        by_sw_address,
                                  const void* address_buffer) noexcept {
     return delete_(this, by_sw_address, address_buffer);
   }
@@ -126,15 +126,15 @@ class ArpProtocol final {
   }
 
   FORCE_INLINE auto cancel(const void* target_sw_address,
-                           Event resolved_event) noexcept {
+                           Event       resolved_event) noexcept {
     return cancel_(this, target_sw_address, resolved_event);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xf4b427bb,
-                  0xba21,
-                  0x4f16,
-                  {0xbc, 0x4e, 0x43, 0xe4, 0x16, 0xab, 0x61, 0x9c}};
+  static constexpr auto guid =
+      Guid{0xf4b427bb,
+           0xba21,
+           0x4f16,
+           {0xbc, 0x4e, 0x43, 0xe4, 0x16, 0xab, 0x61, 0x9c}};
 };
 
 }  // namespace efi

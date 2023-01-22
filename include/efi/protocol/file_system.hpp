@@ -28,7 +28,7 @@ class SimpleFileSystemProtocol final {
   using OpenVolumeFn = Status(EFI_CALL*)(SimpleFileSystemProtocol* self,
                                          FileProtocol** root) noexcept;
 
-  const uint64_t revision_;
+  const uint64_t     revision_;
   const OpenVolumeFn open_volume_;
 
  public:
@@ -45,11 +45,11 @@ class SimpleFileSystemProtocol final {
     return open_volume_(this, root);
   }
 
-  static constexpr auto Guid =
-      efi::Guid{0x0964e5b22,
-                0x6459,
-                0x11d2,
-                {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x0964e5b22,
+           0x6459,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 }  // namespace efi

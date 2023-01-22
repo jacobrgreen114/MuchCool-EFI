@@ -28,8 +28,8 @@ class SimplePointerState final {
   int32_t relative_movement_x_;
   int32_t relative_movement_y_;
   int32_t relative_movement_z_;
-  bool left_button_;
-  bool right_button_;
+  bool    left_button_;
+  bool    right_button_;
 };
 
 class SimpleInputMode final {
@@ -37,8 +37,8 @@ class SimpleInputMode final {
   uint64_t resolution_x_;
   uint64_t resolution_y_;
   uint64_t resolution_z_;
-  bool left_button_;
-  bool right_button_;
+  bool     left_button_;
+  bool     right_button_;
 };
 
 class SimplePointerProtocol final {
@@ -49,9 +49,9 @@ class SimplePointerProtocol final {
   using GetStateFn = Status(EFI_CALL*)(SimplePointerProtocol* self,
                                        SimplePointerState* out_state) noexcept;
 
-  const ResetFn reset_;
-  const GetStateFn get_state_;
-  const Event wait_for_input_;
+  const ResetFn                reset_;
+  const GetStateFn             get_state_;
+  const Event                  wait_for_input_;
   const SimpleInputMode* const mode_;
 
  public:
@@ -79,11 +79,11 @@ class SimplePointerProtocol final {
     return *mode_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x31878c87,
-                  0xb75,
-                  0x11d5,
-                  {0x9a, 0x4f, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}};
+  static constexpr auto guid =
+      Guid{0x31878c87,
+           0xb75,
+           0x11d5,
+           {0x9a, 0x4f, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}};
 };
 
 class AbsolutePointerState final {
@@ -112,9 +112,9 @@ class AbsolutePointerProtocol final {
   using GetStateFn = Status(EFI_CALL*)(
       AbsolutePointerProtocol* self, AbsolutePointerState* out_state) noexcept;
 
-  const ResetFn reset_;
-  const GetStateFn get_state_;
-  const Event wait_for_input_;
+  const ResetFn                    reset_;
+  const GetStateFn                 get_state_;
+  const Event                      wait_for_input_;
   const AbsolutePointerMode* const mode_;
 
  public:
@@ -143,11 +143,11 @@ class AbsolutePointerProtocol final {
     return *mode_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x8D59D32B,
-                  0xC655,
-                  0x4AE9,
-                  {0x9B, 0x15, 0xF2, 0x59, 0x04, 0x99, 0x2A, 0x43}};
+  static constexpr auto guid =
+      Guid{0x8D59D32B,
+           0xC655,
+           0x4AE9,
+           {0x9B, 0x15, 0xF2, 0x59, 0x04, 0x99, 0x2A, 0x43}};
 };
 
 }  // namespace efi

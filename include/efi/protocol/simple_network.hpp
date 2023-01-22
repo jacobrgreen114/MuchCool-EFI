@@ -72,25 +72,25 @@ class SimpleNetworkMode final {
   static constexpr auto MCAST_FILTER_COUNT = 16;
   using MCastFilterArray = std::array<MacAddress, MCAST_FILTER_COUNT>;
 
-  SimpleNetworkState State;
-  uint32_t HwAddressSize;
-  uint32_t MediaHeaderSize;
-  uint32_t MaxPacketSize;
-  uint32_t NvRamSize;
-  uint32_t NvRamAccessSize;
-  uint32_t ReceiveFilterMask;
+  SimpleNetworkState    State;
+  uint32_t              HwAddressSize;
+  uint32_t              MediaHeaderSize;
+  uint32_t              MaxPacketSize;
+  uint32_t              NvRamSize;
+  uint32_t              NvRamAccessSize;
+  uint32_t              ReceiveFilterMask;
   RecieveFilterSettings ReceiveFilterSetting;
-  uint32_t MaxMCastFilterCount;
-  uint32_t MCastFilterCount;
-  MCastFilterArray MCastFilter;
-  MacAddress CurrentAddress;
-  MacAddress BroadcastAddress;
-  MacAddress PermanentAddress;
-  uint8_t IfType;
-  bool MacAddressChangeable;
-  bool MultipleTxSupported;
-  bool MediaPresentSupported;
-  bool MediaPresent;
+  uint32_t              MaxMCastFilterCount;
+  uint32_t              MCastFilterCount;
+  MCastFilterArray      MCastFilter;
+  MacAddress            CurrentAddress;
+  MacAddress            BroadcastAddress;
+  MacAddress            PermanentAddress;
+  uint8_t               IfType;
+  bool                  MacAddressChangeable;
+  bool                  MultipleTxSupported;
+  bool                  MediaPresentSupported;
+  bool                  MediaPresent;
 };
 
 class SimpleNetworkProtocol final {
@@ -128,41 +128,41 @@ class SimpleNetworkProtocol final {
   using NvDataFn       = Status(EFI_CALL*)(SimpleNetworkProtocol* self,
                                      bool read_write, uintn_t offset,
                                      uintn_t buffer_size,
-                                     void* buffer) noexcept;
+                                     void*   buffer) noexcept;
 
   using GetStatusFn    = Status(EFI_CALL*)(SimpleNetworkProtocol* self,
-                                        uint32_t* interrupt_status,
-                                        void** tx_buf) noexcept;
+                                        uint32_t*              interrupt_status,
+                                        void**                 tx_buf) noexcept;
 
   using TransmitFn     = Status(EFI_CALL*)(SimpleNetworkProtocol* self,
                                        uintn_t header_size, uintn_t buffer_size,
-                                       const void* buffer,
-                                       const MacAddress* src_addr,
-                                       const MacAddress* dst_addr,
+                                       const void*         buffer,
+                                       const MacAddress*   src_addr,
+                                       const MacAddress*   dst_addr,
                                        const InetProtocol* protocol) noexcept;
 
   using ReceiveFn      = Status(EFI_CALL*)(SimpleNetworkProtocol* self,
-                                      uintn_t* header_size,
+                                      uintn_t*               header_size,
                                       uintn_t* buffer_size, void* buffer,
-                                      MacAddress* src_addr,
-                                      MacAddress* dst_addr,
+                                      MacAddress*   src_addr,
+                                      MacAddress*   dst_addr,
                                       InetProtocol* protocol) noexcept;
 
-  const uint64_t revision_;
-  const StartFn start_;
-  const StopFn stop_;
-  const InitializeFn initialize_;
-  const ResetFn reset_;
-  const ShutdownFn shutdown_;
+  const uint64_t         revision_;
+  const StartFn          start_;
+  const StopFn           stop_;
+  const InitializeFn     initialize_;
+  const ResetFn          reset_;
+  const ShutdownFn       shutdown_;
   const ReceiveFiltersFn receive_filters_;
   const StationAddressFn station_address_;
-  const StatisticsFn statistics_;
-  const MCastIpToMacFn mcast_ip_to_mac_;
-  const NvDataFn nv_data_;
-  const GetStatusFn get_status_;
-  const TransmitFn transmit_;
-  const ReceiveFn receive_;
-  const Event wait_for_packet_;
+  const StatisticsFn     statistics_;
+  const MCastIpToMacFn   mcast_ip_to_mac_;
+  const NvDataFn         nv_data_;
+  const GetStatusFn      get_status_;
+  const TransmitFn       transmit_;
+  const ReceiveFn        receive_;
+  const Event            wait_for_packet_;
 
  public:
   SimpleNetworkProtocol()                                           = delete;
@@ -195,14 +195,14 @@ class SimpleNetworkProtocol final {
   }
 
   FORCE_INLINE auto receive_filters(uint32_t enable, uint32_t disable,
-                                    bool reset_mcast_filter,
-                                    uintn_t mcast_filter_count,
+                                    bool              reset_mcast_filter,
+                                    uintn_t           mcast_filter_count,
                                     const MacAddress* mcast_filter) noexcept {
     return receive_filters_(this, enable, disable, reset_mcast_filter,
                             mcast_filter_count, mcast_filter);
   }
 
-  FORCE_INLINE auto station_address(bool reset,
+  FORCE_INLINE auto station_address(bool              reset,
                                     const MacAddress* new_address) noexcept {
     return station_address_(this, reset, new_address);
   }
@@ -213,12 +213,12 @@ class SimpleNetworkProtocol final {
   }
 
   FORCE_INLINE auto mcast_ip_to_mac(const Ipv4Address& ip,
-                                    MacAddress* mac) noexcept {
+                                    MacAddress*        mac) noexcept {
     return mcast_ip_to_mac_(this, false, ip, mac);
   }
 
   FORCE_INLINE auto mcast_ip_to_mac(const Ipv6Address& ip,
-                                    MacAddress* mac) noexcept {
+                                    MacAddress*        mac) noexcept {
     return mcast_ip_to_mac_(this, true, ip, mac);
   }
 
@@ -228,13 +228,13 @@ class SimpleNetworkProtocol final {
   }
 
   FORCE_INLINE auto get_status(uint32_t* interrupt_status,
-                               void** tx_buf) noexcept {
+                               void**    tx_buf) noexcept {
     return get_status_(this, interrupt_status, tx_buf);
   }
 
   FORCE_INLINE auto transmit(uintn_t header_size, uintn_t buffer_size,
                              const void* buffer, const MacAddress* src_addr,
-                             const MacAddress* dst_addr,
+                             const MacAddress*   dst_addr,
                              const InetProtocol* protocol) noexcept {
     return transmit_(this, header_size, buffer_size, buffer, src_addr, dst_addr,
                      protocol);
@@ -242,7 +242,7 @@ class SimpleNetworkProtocol final {
 
   FORCE_INLINE auto receive(uintn_t* header_size, uintn_t* buffer_size,
                             void* buffer, MacAddress* src_addr,
-                            MacAddress* dst_addr,
+                            MacAddress*   dst_addr,
                             InetProtocol* protocol) noexcept {
     return receive_(this, header_size, buffer_size, buffer, src_addr, dst_addr,
                     protocol);
@@ -252,11 +252,11 @@ class SimpleNetworkProtocol final {
     return wait_for_packet_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xA19832B9,
-                  0xAC25,
-                  0x11D3,
-                  {0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}};
+  static constexpr auto guid =
+      Guid{0xA19832B9,
+           0xAC25,
+           0x11D3,
+           {0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d}};
 };
 
 }  // namespace efi

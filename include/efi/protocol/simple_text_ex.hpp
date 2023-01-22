@@ -49,7 +49,7 @@ enum class KeyToggleState : uint8_t {
 };
 
 class KeyState final {
-  KeyShiftState key_shift_state_;
+  KeyShiftState  key_shift_state_;
   KeyToggleState key_toggle_state_;
 };
 
@@ -68,7 +68,7 @@ class SimpleTextInputExProtocol final {
                                       bool extended_verification);
 
   using ReadKeyExFn = Status(EFI_CALL*)(SimpleTextInputExProtocol* self,
-                                        KeyData* key_data);
+                                        KeyData*                   key_data);
 
   using SetStateFn  = Status(EFI_CALL*)(SimpleTextInputExProtocol* self,
                                        const KeyToggleState& key_toggle_state);
@@ -80,11 +80,11 @@ class SimpleTextInputExProtocol final {
   using UnregisterKeystrokeNotifyFn = Status(EFI_CALL*)(
       SimpleTextInputExProtocol* self, NotifyHandle notification_handle);
 
-  const ResetExFn reset_;
-  const ReadKeyExFn read_keystroke_;
-  const Event wait_for_key_;
-  const SetStateFn set_state_;
-  const RegisterKeystrokeNotifyFn register_key_notify_;
+  const ResetExFn                   reset_;
+  const ReadKeyExFn                 read_keystroke_;
+  const Event                       wait_for_key_;
+  const SetStateFn                  set_state_;
+  const RegisterKeystrokeNotifyFn   register_key_notify_;
   const UnregisterKeystrokeNotifyFn unregister_key_notify_;
 
  public:
@@ -113,7 +113,7 @@ class SimpleTextInputExProtocol final {
     return set_state_(this, key_toggle_state);
   }
 
-  FORCE_INLINE auto register_key_notify(const KeyData& key_data,
+  FORCE_INLINE auto register_key_notify(const KeyData&    key_data,
                                         KeyNotifyFunction key_notify_function,
                                         NotifyHandle* notify_handle) noexcept {
     return register_key_notify_(this, key_data, key_notify_function,
@@ -125,11 +125,11 @@ class SimpleTextInputExProtocol final {
     return unregister_key_notify_(this, notification_handle);
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0xdd9e7534,
-                  0x7762,
-                  0x4698,
-                  {0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa}};
+  static constexpr auto guid =
+      Guid{0xdd9e7534,
+           0x7762,
+           0x4698,
+           {0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa}};
 };
 
 }  // namespace efi

@@ -41,28 +41,28 @@ enum class FileAttribute : uint64_t {
 
 class FileInfo final {
  private:
-  uint64_t size_;
-  uint64_t file_size_;
-  uint64_t physical_size_;
-  Time create_time_;
-  Time last_access_time_;
-  Time modification_time_;
+  uint64_t      size_;
+  uint64_t      file_size_;
+  uint64_t      physical_size_;
+  Time          create_time_;
+  Time          last_access_time_;
+  Time          modification_time_;
   FileAttribute attribute_;
-  char16_t file_name_[];
+  char16_t      file_name_[];
 
  public:
   // warn : 0x8e and 0x39 might need to be flipped
-  static constexpr auto Guid =
-      ::efi::Guid{0x09576e92,
-                  0x6d3f,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x09576e92,
+           0x6d3f,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class FileSystemInfo final {
  private:
   uint64_t size_;
-  bool read_only_;
+  bool     read_only_;
   uint64_t volume_size_;
   uint64_t free_space_;
   uint32_t block_size_;
@@ -70,11 +70,11 @@ class FileSystemInfo final {
 
  public:
   // warn : 0x8e and 0x39 might need to be flipped
-  static constexpr auto Guid =
-      ::efi::Guid{0x09576e93,
-                  0x6d3f,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x09576e93,
+           0x6d3f,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class FileProtocol {
@@ -85,11 +85,11 @@ class FileProtocol {
   };
 
  private:
-  using OpenFn   = Status(EFI_CALL*)(FileProtocol* self,
-                                   FileProtocol** new_handle,
+  using OpenFn   = Status(EFI_CALL*)(FileProtocol*   self,
+                                   FileProtocol**  new_handle,
                                    const char16_t* file_name,
-                                   FileOpenMode open_mode,
-                                   FileAttribute attributes) noexcept;
+                                   FileOpenMode    open_mode,
+                                   FileAttribute   attributes) noexcept;
 
   using CloseFn  = Status(EFI_CALL*)(FileProtocol* self) noexcept;
 
@@ -104,43 +104,43 @@ class FileProtocol {
   using FlushFn  = Status(EFI_CALL*)(FileProtocol* self) noexcept;
 
   using SetPositionFn = Status(EFI_CALL*)(FileProtocol* self,
-                                          uint64_t position) noexcept;
+                                          uint64_t      position) noexcept;
 
   using GetPositionFn = Status(EFI_CALL*)(FileProtocol* self,
-                                          uint64_t* position) noexcept;
+                                          uint64_t*     position) noexcept;
 
   using GetInfoFn     = Status(EFI_CALL*)(FileProtocol* self,
-                                      const Guid& information_type,
-                                      uintn_t* buffer_size,
-                                      void* buffer) noexcept;
+                                      const Guid&   information_type,
+                                      uintn_t*      buffer_size,
+                                      void*         buffer) noexcept;
 
   using SetInfoFn     = Status(EFI_CALL*)(FileProtocol* self,
-                                      const Guid& information_type,
-                                      uintn_t buffer_size,
-                                      const void* buffer) noexcept;
+                                      const Guid&   information_type,
+                                      uintn_t       buffer_size,
+                                      const void*   buffer) noexcept;
 
-  const Revision revision_;
-  const OpenFn open_;
-  const CloseFn close_;
-  const DeleteFn delete_;
-  const ReadFn read_;
-  const WriteFn write_;
+  const Revision      revision_;
+  const OpenFn        open_;
+  const CloseFn       close_;
+  const DeleteFn      delete_;
+  const ReadFn        read_;
+  const WriteFn       write_;
   const GetPositionFn get_position_;
   const SetPositionFn set_position_;
-  const GetInfoFn get_info_;
-  const SetInfoFn set_info_;
-  const FlushFn flush_;
+  const GetInfoFn     get_info_;
+  const SetInfoFn     set_info_;
+  const FlushFn       flush_;
 
  public:
-  FileProtocol()                                       = delete;
-  FileProtocol(FileProtocol&&)                         = delete;
-  FileProtocol(const FileProtocol&)                    = delete;
-  ~FileProtocol()                                      = delete;
-  auto operator=(FileProtocol&&) -> FileProtocol&      = delete;
-  auto operator=(const FileProtocol&) -> FileProtocol& = delete;
+  FileProtocol()                                                    = delete;
+  FileProtocol(FileProtocol&&)                                      = delete;
+  FileProtocol(const FileProtocol&)                                 = delete;
+  ~FileProtocol()                                                   = delete;
+  auto              operator=(FileProtocol&&) -> FileProtocol&      = delete;
+  auto              operator=(const FileProtocol&) -> FileProtocol& = delete;
 
   FORCE_INLINE auto open(FileProtocol** new_handle, const char16_t* file_name,
-                         FileOpenMode open_mode,
+                         FileOpenMode  open_mode,
                          FileAttribute attributes) noexcept {
     return open_(this, new_handle, file_name, open_mode, attributes);
   }
@@ -182,32 +182,32 @@ class FileProtocol {
 
 class FileIOToken final {
  private:
-  const Event event_;
-  const Status status_;
+  const Event   event_;
+  const Status  status_;
   const uintn_t buffer_size_;
-  void* const buffer_;
+  void* const   buffer_;
 };
 
 class FileProtocol2 : public FileProtocol {
  private:
-  using OpenExFn  = Status(EFI_CALL*)(FileProtocol* self,
-                                     FileProtocol** new_handle,
+  using OpenExFn  = Status(EFI_CALL*)(FileProtocol*   self,
+                                     FileProtocol**  new_handle,
                                      const char16_t* file_name,
-                                     FileOpenMode open_mode,
-                                     FileAttribute attributes,
-                                     FileIOToken* token) noexcept;
+                                     FileOpenMode    open_mode,
+                                     FileAttribute   attributes,
+                                     FileIOToken*    token) noexcept;
 
   using ReadExFn  = Status(EFI_CALL*)(FileProtocol* self,
-                                     FileIOToken* token) noexcept;
+                                     FileIOToken*  token) noexcept;
 
   using WriteExFn = Status(EFI_CALL*)(FileProtocol* self,
-                                      FileIOToken* token) noexcept;
+                                      FileIOToken*  token) noexcept;
 
   using FlushExFn = Status(EFI_CALL*)(FileProtocol* self,
-                                      FileIOToken* token) noexcept;
+                                      FileIOToken*  token) noexcept;
 
-  const OpenExFn open_ex_;
-  const ReadExFn read_ex_;
+  const OpenExFn  open_ex_;
+  const ReadExFn  read_ex_;
   const WriteExFn write_ex_;
   const FlushExFn flush_ex_;
 

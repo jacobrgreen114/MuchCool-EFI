@@ -105,9 +105,9 @@ enum class BIOSBootSpecDevicePathSubType : uint8_t {
 #pragma pack(push, 1)
 
 class DevicePathProtocol {
-  DevicePathType type_;
+  DevicePathType    type_;
   DevicePathSubType subtype_;
-  uint16_t length_;
+  uint16_t          length_;
 
  public:
   NODISCARD auto type() const noexcept {
@@ -122,11 +122,11 @@ class DevicePathProtocol {
     return length_;
   }
 
-  static constexpr auto Guid =
-      ::efi::Guid{0x09576e91,
-                  0x6d3f,
-                  0x11d2,
-                  {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
+  static constexpr auto guid =
+      Guid{0x09576e91,
+           0x6d3f,
+           0x11d2,
+           {0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b}};
 };
 
 class PciDevicePath final : public DevicePathProtocol {
@@ -154,8 +154,8 @@ class PcCardDevicePath final : public DevicePathProtocol {
 
 class MemoryMappedDevicePath final : public DevicePathProtocol {
   MemoryType memory_type_;
-  void* start_addr_;
-  void* end_addr_;
+  void*      start_addr_;
+  void*      end_addr_;
 
  public:
   NODISCARD auto memory_type() const noexcept {
@@ -172,7 +172,7 @@ class MemoryMappedDevicePath final : public DevicePathProtocol {
 };
 
 class VendorDevicePath : public DevicePathProtocol {
-  ::efi::Guid vendor_guid_;
+  Guid vendor_guid_;
 
  public:
   NODISCARD auto& vendor_guid() const noexcept {
@@ -214,7 +214,7 @@ enum class BaseboardManagementControllerInterfaceType : uint8_t {
 class BaseboardManagementControllerDevicePath final
     : public DevicePathProtocol {
   BaseboardManagementControllerInterfaceType interface_type_;
-  void* base_addr_;
+  void*                                      base_addr_;
 
  public:
   NODISCARD auto interface_type() const noexcept {
@@ -272,8 +272,8 @@ class NVDIMMDevicePath final : public DevicePathProtocol {
 };
 
 class AtapiDevicePath final : public DevicePathProtocol {
-  bool secondary_;
-  bool slave_;
+  bool     secondary_;
+  bool     slave_;
   uint16_t logical_unit_number_;
 
  public:
@@ -325,8 +325,8 @@ class FibreChannelExDevicePath final : public DevicePathProtocol {
   using LogicalUnitNumber = std::array<uint8_t, 8>;
 
  private:
-  uint32_t reserved_;
-  WorldWideName world_wide_name_;
+  uint32_t          reserved_;
+  WorldWideName     world_wide_name_;
   LogicalUnitNumber logical_unit_number_;
 
  public:
@@ -398,9 +398,9 @@ class DeviceLogicalUnitDevicePath final : public DevicePathProtocol {
 class UsbClassDevicePath final : public DevicePathProtocol {
   uint16_t vendor_id_;
   uint16_t product_id_;
-  uint8_t device_class_;
-  uint8_t device_subclass_;
-  uint8_t device_protocol_;
+  uint8_t  device_class_;
+  uint8_t  device_subclass_;
+  uint8_t  device_protocol_;
 };
 
 class I2ODevicePath final : public DevicePathProtocol {
@@ -410,20 +410,20 @@ class I2ODevicePath final : public DevicePathProtocol {
 class MacAddressDevicePath final : public DevicePathProtocol {
   MacAddress mac_;
   // todo : convert iftype to enum
-  uint8_t if_type_;
+  uint8_t    if_type_;
 };
 
 class Ipv4DevicePath final : public DevicePathProtocol {
   Ipv4Address local_addr_;
   Ipv4Address remote_addr_;
-  uint16_t local_port_;
-  uint16_t remote_port_;
+  uint16_t    local_port_;
+  uint16_t    remote_port_;
   // todo : convert to enum (UDP, TCP, etc.)
-  uint16_t protocol_;
-  bool static_;
+  uint16_t    protocol_;
+  bool        static_;
   Ipv4Address gateway_addr_;
   // todo : convert to class
-  uint32_t subnet_mask_;
+  uint32_t    subnet_mask_;
 };
 
 enum class IpAddressOrigin : uint8_t {
@@ -433,15 +433,15 @@ enum class IpAddressOrigin : uint8_t {
 };
 
 class Ipv6DevicePath final : public DevicePathProtocol {
-  Ipv6Address local_addr_;
-  Ipv6Address remote_addr_;
-  uint16_t local_port_;
-  uint16_t remote_port_;
+  Ipv6Address     local_addr_;
+  Ipv6Address     remote_addr_;
+  uint16_t        local_port_;
+  uint16_t        remote_port_;
   // todo : convert to enum (UDP, TCP, etc.)
-  uint16_t protocol_;
+  uint16_t        protocol_;
   IpAddressOrigin origin_;
-  uint8_t prefix_length_;
-  Ipv6Address gateway_addr_;
+  uint8_t         prefix_length_;
+  Ipv6Address     gateway_addr_;
 };
 
 class VlanDevicePath final : public DevicePathProtocol {
@@ -459,10 +459,10 @@ ENUM_FLAGS(InfiniBandResourceFlags);
 
 class InfiniBandDevicePath final : public DevicePathProtocol {
   InfiniBandResourceFlags resource_flags_;
-  ::efi::Guid port_gid_;
-  uint64_t iocguid_serviceid_;
-  uint64_t target_port_id_;
-  uint64_t device_id_;
+  ::efi::Guid             port_gid_;
+  uint64_t                iocguid_serviceid_;
+  uint64_t                target_port_id_;
+  uint64_t                device_id_;
 };
 
 enum class ParityTypeU8 : uint8_t {
@@ -482,11 +482,11 @@ enum class StopBitsU8 : uint8_t {
 };
 
 class UartDevicePath final : public DevicePathProtocol {
-  uint32_t reserved_;
-  uint64_t baud_rate_;
-  uint8_t data_bits_;
+  uint32_t     reserved_;
+  uint64_t     baud_rate_;
+  uint8_t      data_bits_;
   ParityTypeU8 parity_;
-  StopBitsU8 stop_bits_;
+  StopBitsU8   stop_bits_;
 };
 
 class VendorMessagingDevicePath final : public DevicePathProtocol {
@@ -525,7 +525,7 @@ enum class FlowControlFlags : uint32_t {
 ENUM_FLAGS(FlowControlFlags);
 
 class UartFlowControlMessagingDevicePath final : public DevicePathProtocol {
-  ::efi::Guid vendor_guid_;
+  ::efi::Guid      vendor_guid_;
   FlowControlFlags flow_control_;
 
  public:
@@ -542,12 +542,12 @@ class SasSataDeviceTopologyInfo final {
 };
 
 class SasDevicePath final : public DevicePathProtocol {
-  ::efi::Guid vendor_guid_;
-  uint32_t reserved_;
-  uint64_t sas_addr_;
-  uint64_t lun_;
+  ::efi::Guid               vendor_guid_;
+  uint32_t                  reserved_;
+  uint64_t                  sas_addr_;
+  uint64_t                  lun_;
   SasSataDeviceTopologyInfo dev_top_info_;
-  uint16_t relative_target_port_;
+  uint16_t                  relative_target_port_;
 };
 
 using LogicalUnitNumberArray = std::array<uint8_t, 8>;
@@ -557,11 +557,11 @@ class SasExDevicePath final : public DevicePathProtocol {
   using SasAddress = std::array<uint8_t, 8>;
 
  private:
-  SasAddress sas_addr_;
-  uint64_t reserved_;
-  LogicalUnitNumberArray lun_;
+  SasAddress                sas_addr_;
+  uint64_t                  reserved_;
+  LogicalUnitNumberArray    lun_;
   SasSataDeviceTopologyInfo dev_top_info_;
-  uint16_t relative_target_port_;
+  uint16_t                  relative_target_port_;
 };
 
 enum class IScsiProtocol : uint16_t {
@@ -573,12 +573,12 @@ class IScsiLoginOptions final {
 };
 
 class IScsiDevicePath final : public DevicePathProtocol {
-  IScsiProtocol protocol_;
-  IScsiLoginOptions options_;
+  IScsiProtocol          protocol_;
+  IScsiLoginOptions      options_;
   LogicalUnitNumberArray lun_;
-  uint16_t target_portal_group_tag_;
+  uint16_t               target_portal_group_tag_;
   // todo : implement as template
-  char8_t target_name[];
+  char8_t                target_name[];
 };
 
 class NvmExpressDevicePath final : public DevicePathProtocol {
@@ -621,11 +621,11 @@ class EmmcDevicePath final : public DevicePathProtocol {
 
 class BluetoothLEDevicePath final : public DevicePathProtocol {
   BluetoothAddress address_;
-  uint8_t address_type_;
+  uint8_t          address_type_;
 };
 
 class DnsDevicePath final : public DevicePathProtocol {
-  bool ipv6_;
+  bool      ipv6_;
   // todo : implement as template
   IpAddress addresses_[];
 };
@@ -645,21 +645,21 @@ enum class RestServiceAccessMode : uint8_t {
 };
 
 class RestServiceDevicePath : public DevicePathProtocol {
-  RestService service_;
+  RestService           service_;
   RestServiceAccessMode access_mode_;
 };
 
 class VendorRestServiceDevicePath : public RestServiceDevicePath {
   ::efi::Guid service_guid_;
   // todo : implement as template
-  uint8_t data_[];
+  uint8_t     data_[];
 };
 
 class NvmeOverFabricDevicePath final : public DevicePathProtocol {
-  uint8_t nidt_;
+  uint8_t     nidt_;
   ::efi::Guid nid_;
   // todo : implement as template
-  char8_t subsystem_nqn_[];
+  char8_t     subsystem_nqn_[];
 };
 
 enum class PartitionFormat : uint8_t {
@@ -673,11 +673,11 @@ enum class DiskSignatureType : uint8_t {
 };
 
 class HardDriveDevicePath final : public DevicePathProtocol {
-  uint32_t partition_;
-  uint64_t partition_start_;
-  uint64_t partition_size_;
-  ::efi::Guid partition_signature_;
-  PartitionFormat partition_format_;
+  uint32_t          partition_;
+  uint64_t          partition_start_;
+  uint64_t          partition_size_;
+  ::efi::Guid       partition_signature_;
+  PartitionFormat   partition_format_;
   DiskSignatureType signature_type_;
 };
 
@@ -689,7 +689,7 @@ class CdRomDevicePath final : public DevicePathProtocol {
 
 class VendorMediaDevicePath final : public DevicePathProtocol {
   ::efi::Guid vendor_guid_;
-  uint8_t data_[];
+  uint8_t     data_[];
 };
 
 class FilePathDevicePath final : public DevicePathProtocol {
@@ -709,10 +709,10 @@ class PIWGFirmwareVolumeDevicePath final : public DevicePathProtocol {
 };
 
 class RamDiskDevicePath final : public DevicePathProtocol {
-  void* start_add_;
-  void* end_addr_;
+  void*       start_add_;
+  void*       end_addr_;
   ::efi::Guid disk_type_;
-  uint16_t instance_;
+  uint16_t    instance_;
 
  public:
   constexpr static const auto VirtualDiskGuid =
@@ -753,8 +753,8 @@ enum class BiosBootSpecificationDeviceType : uint16_t {
 
 class BiosBootSpecificationDevicePath final : public DevicePathProtocol {
   BiosBootSpecificationDeviceType device_type_;
-  uint16_t status_flag_;
-  char8_t description_[];
+  uint16_t                        status_flag_;
+  char8_t                         description_[];
 };
 
 #pragma pack(pop)
